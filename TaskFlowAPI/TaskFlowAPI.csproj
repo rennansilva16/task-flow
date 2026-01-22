@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorksheetData\WorksheetData.csproj" />
+    <ProjectReference Include="..\TaskFlowData\TaskFlowData.csproj" />
   </ItemGroup>
 
 </Project>
