@@ -1,6 +1,7 @@
 
 using System;
 using Microsoft.EntityFrameworkCore;
+using TaskFlow.Infrastructure.Repositories;
 
 namespace WorksheetAPI
 {
@@ -17,31 +18,60 @@ namespace WorksheetAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<WorksheetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WorksheetConnection")));
+            builder.Services.AddScoped<TarefaRepository>();
+            builder.Services.AddScoped<TarefaService>();
+
+
+            builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));
+
+            builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazor", policy =>
+    {
+        policy.WithOrigins("https://localhost:7206")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<WorksheetContext>();
-                if (dbContext.Database.CanConnect())
+                try
                 {
-                    Console.WriteLine("Conexão com o banco de dados funcionando!");
+                    var dbContext = scope.ServiceProvider.GetRequiredService<TaskFlowDbContext>();
+                    if (dbContext.Database.CanConnect())
+                    {
+                        Console.WriteLine("Conexï¿½o com o banco de dados funcionando!");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nï¿½o foi possï¿½vel conectar ao banco de dados.");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Não foi possível conectar ao banco de dados.");
+                    Console.WriteLine($"Erro ao tentar conectar ao banco de dados: {ex.Message}");
                 }
+
             }
 
-                // Configure the HTTP request pipeline.
-                if (app.Environment.IsDevelopment())
-                {
-                    app.UseSwagger();
-                    app.UseSwaggerUI();
-                }
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            // Configurar para abrir no swagger
+
+            app.MapGet("/", () => Results.Redirect("/swagger"));
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowBlazor");
 
             app.UseAuthorization();
 

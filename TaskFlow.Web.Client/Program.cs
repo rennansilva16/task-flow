@@ -1,0 +1,16 @@
+using MudBlazor.Services;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using TaskFlow.Web.Client;
+
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddMudServices();
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["TaskFlowAPI:BaseUrl"] ?? throw new InvalidOperationException("Base URL da API não configurada.")) });
+
+builder.Services.AddScoped<TarefaService>();
+
+await builder.Build().RunAsync();

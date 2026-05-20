@@ -1,0 +1,101 @@
+@inject TarefaService TarefaService
+@inject IDialogService DialogService
+
+<MudDialog>
+    <TitleContent>
+        Visualizar Tarefa
+    </TitleContent>
+    <DialogContent>
+        @if (!IsEditing)
+        {
+            <MudText Typo="Typo.h6">@Task.Titulo</MudText>
+
+            <MudText Class="mt-2">@Task.Descricao</MudText>
+
+            <MudText Class="mt-2">
+                Prazo: @Task.DataPrazo?.ToString("dd/MM/yyyy")
+            </MudText>
+
+            <MudText Class="mt-2">
+                Status: @Task.Status
+            </MudText>
+        }
+        else
+        {
+            <MudTextField Label="Título" @bind-Value="Task.Titulo" FullWidth="true" />
+
+            <MudTextField Label="Descrição" @bind-Value="Task.Descricao" FullWidth="true" />
+
+            <MudDatePicker Label="Data de Prazo" @bind-Date="datePrazoTemp" />
+
+        }
+    </DialogContent>
+    <DialogActions>
+        @if (!IsEditing)
+        {
+            <MudButton Color="Color.Primary" OnClick="Editar">Editar</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" OnClick="Salvar">Salvar</MudButton>
+        }
+        <MudButton Color="Color.Primary" OnClick="Excluir">Excluir</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="Fechar">Fechar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter]
+    public TaskResponse Task { get; set; } = default!;
+    private bool IsEditing { get; set; } = false;
+    private DateTime? datePrazoTemp;
+
+
+
+    private void Fechar() => MudDialog.Close(DialogResult.Cancel());
+
+    private void Editar()
+    {
+        if (!IsEditing)
+        {
+            IsEditing = true;
+
+            // Armazena a data atual para o DatePicker
+            datePrazoTemp = Task.DataPrazo.HasValue ? Task.DataPrazo.Value.ToDateTime(new TimeOnly(0, 0)) : (DateTime?)null;
+        }
+    }
+    private async Task Excluir()
+    {
+        var confirm = await DialogService.ShowMessageBoxAsync(
+            "Confirmação",
+            "Tem certeza que deseja excluir esta tarefa?",
+            yesText: "Sim",
+            noText: "Não");
+
+        if (confirm == true)
+        {
+            var request = new TaskRemoveRequest
+            {
+                Id = Task.Id
+            };
+
+            MudDialog.Close(DialogResult.Ok(request));
+        }
+    }
+
+    private void Salvar()
+    {
+        var tarefaAtualizada = new UpdateTaskRequest
+        {
+            Id = Task.Id,
+            Titulo = Task.Titulo,
+            Descricao = Task.Descricao,
+            DataPrazo = datePrazoTemp.HasValue ? DateOnly.FromDateTime(datePrazoTemp.Value) : (DateOnly?)null,
+            Status = Task.Status
+        };
+        // Passar tarefa e Id para o DialogResult, para que a Home possa atualizar a tarefa na lista
+        MudDialog.Close(DialogResult.Ok(tarefaAtualizada));
+    }
+}

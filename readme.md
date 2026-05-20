@@ -119,7 +119,7 @@ O escopo permanece aberto para evolução contínua.
 ## 📌 Status do Projeto
 
 🚧 **Em desenvolvimento contínuo**
-Projeto em evolução, com foco em organização, aprendizado prático e qualidade técnica. Teste
+Projeto em evolução, com foco em organização, aprendizado prático e qualidade técnica.
 
 ---
 

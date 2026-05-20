@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskFlowData\TaskFlowData.csproj" />
+    <ProjectReference Include="..\TaskFlow.Infrastructure\TaskFlow.Infrastructure.csproj" />
+    <ProjectReference Include="..\TaskFlow.Application\TaskFlow.Application.csproj" />
+    <ProjectReference Include="..\TaskFlow.Shared\TaskFlow.Shared.csproj" />
   </ItemGroup>
 
 </Project>

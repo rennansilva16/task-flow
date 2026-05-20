@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Rodar API + Client",
+      "configurations": [
+        "API",
+        "Client"
+      ],
+      "requireExactSource": false
+    }
+  ],
+  "configurations": [
+    {
+      "name": "API",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/TaskFlowAPI/bin/Debug/net8.0/TaskFlowAPI.dll",
+      "cwd": "${workspaceFolder}/TaskFlowAPI",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Client",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "https://localhost:7206",
+      "webRoot": "${workspaceFolder}/TaskFlow.Web.Client",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+      "preLaunchTask": "run-client"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+@inject TarefaService TarefaService
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Adicionar Nova Tarefa</MudText>
+        <MudTextField Label="Título" @bind-Value="titulo" FullWidth=true Margin="Margin.Dense" />
+        <MudTextField Label="Descrição" @bind-Value="descricao" FullWidth=true Margin="Margin.Dense" />
+        <MudDatePicker Label="Data de Prazo" @bind-Date="dataPrazoTemp" Margin="Margin.Dense" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Secondary" OnClick="@(() => MudDialog.Cancel())">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" OnClick="@AdicionarTarefa">Adicionar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private string titulo = string.Empty;
+    private string descricao = string.Empty;
+    private DateTime? dataPrazoTemp = null;
+    private DateOnly? dataPrazo = null;
+
+    private async Task AdicionarTarefa()
+    {
+        var novaTarefa = new CreateTaskRequest
+        {
+            Titulo = titulo,
+            Descricao = descricao,
+            DataPrazo = dataPrazoTemp.HasValue ? DateOnly.FromDateTime(dataPrazoTemp.Value) : (DateOnly?)null
+        };
+
+        MudDialog.Close(DialogResult.Ok(novaTarefa));
+    }
+}

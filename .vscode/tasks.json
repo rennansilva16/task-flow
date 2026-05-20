@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run-client",
+      "type": "shell",
+      "command": "dotnet run",
+      "options": {
+        "cwd": "${workspaceFolder}/TaskFlow.Web.Client"
+      },
+      "isBackground": true,
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

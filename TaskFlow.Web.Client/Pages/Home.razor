@@ -1,0 +1,134 @@
+﻿@inject ISnackbar Snackbar
+@inject TarefaService TarefaService
+@inject IDialogService DialogService
+@page "/"
+@using TaskFlow.Web.Client.Pages.Modais
+
+<MudPaper>
+	<MudText Typo="Typo.h4" Class="pa-4">TaskFlow - Gerenciamento de Tarefas</MudText>
+	<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="ma-4" OnClick="@(() => OpenAddTaskDialog())">Adicionar Tarefa</MudButton>
+</MudPaper>
+<MudDropContainer T="TaskResponse" Class="d-flex gap-4 pa-4" Items="tasks"
+				  ItemsSelector="@((item, col) => item.Status.ToString() == col)" ItemDropped="TaskUpdated">
+
+	<ChildContent>
+		@foreach (var col in columns)
+		{
+			<MudDropZone T="TaskResponse" Style="min-height: 50px;" Identifier="@col"
+						 Class="flex-grow-1 bg-dark text-white rounded">
+
+				<MudPaper Class="pa-3 mb-2" Style="background-color: #e0e0e0;">
+
+					<MudText Typo="Typo.h6" Class="mb-2">@col</MudText>
+
+				</MudPaper>
+
+			</MudDropZone>
+		}
+	</ChildContent>
+
+	<ItemRenderer>
+		<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 mb-2">
+
+			<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
+
+			<MudText Typo="Typo.body2" Class="mb-1">
+				@context.Descricao
+			</MudText>
+
+			<MudText Typo="Typo.caption">
+				Prazo: @context.DataPrazo?.ToString("dd/MM/yyyy")
+			</MudText>
+
+		</MudPaper>
+	</ItemRenderer>
+
+</MudDropContainer>
+
+@code {
+	private List<TaskResponse>? tasks = new();
+	private List<string> columns = Enum.GetValues<Status>().Select(s => s.ToString()).ToList();
+
+	protected override async Task OnInitializedAsync()
+	{
+		tasks = await TarefaService.GetTarefasAsync();
+	}
+
+	private async Task TaskUpdated(MudItemDropInfo<TaskResponse> info)
+	{
+		if (info.Item == null) throw new Exception("Item nulo recebido no evento de drop.");
+		var novoStatus = Enum.Parse<Status>(info.DropzoneIdentifier);
+		if (info.Item.Status == novoStatus) return; // Evita chamadas desnecessárias à API
+		var tarefaAtualizada = await TarefaService.UpdateTaskStatusAsync(info.Item.Id, novoStatus);
+		info.Item.Status = tarefaAtualizada.Status; // Atualiza o status localmente para refletir a mudança
+	}
+
+	private async Task OpenTaskDetails(TaskResponse task)
+	{
+		var parameters = new DialogParameters
+		{
+			[nameof(VisualizarTaskDialog.Task)] = task
+		};
+		var options = new DialogOptions { CloseOnEscapeKey = true };
+
+		
+
+		var dialog = await DialogService.ShowAsync<VisualizarTaskDialog>(null, parameters, options);
+
+
+		var result = await dialog.Result;
+
+		// Caso 1: Excluiu a tarefa
+		if (result!.Data is TaskRemoveRequest taskRemoveRequest)
+		{
+			bool excluido = await TarefaService.DeleteTarefaAsync(taskRemoveRequest.Id);
+			if (!excluido) {
+				// Mensagem com erro de exclusão
+				Snackbar.Add("Erro ao excluir a tarefa.", Severity.Error);
+				return;
+			}
+			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskRemoveRequest.Id);
+			
+			if (tarefa != null)
+			{
+				tasks!.Remove(tarefa);
+				Snackbar.Add("Tarefa excluída com sucesso.", Severity.Success);
+			}
+		} 
+		// Caso 2: Editou a tarefa
+		else if (result.Data is UpdateTaskRequest requestTaskAtualizada)
+		{
+			var taskAtualizada = await TarefaService.UpdateTarefaAsync(requestTaskAtualizada.Id, requestTaskAtualizada);
+			if (taskAtualizada == null) {
+				// Mensagem com erro de atualização
+				Snackbar.Add("Erro ao atualizar a tarefa.", Severity.Error);
+				return;
+			}
+			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskAtualizada.Id);
+			
+			if (tarefa != null)
+			{
+				tarefa.Titulo = requestTaskAtualizada.Titulo;
+				tarefa.Descricao = requestTaskAtualizada.Descricao;
+				tarefa.DataPrazo = requestTaskAtualizada.DataPrazo;
+				tarefa.Status = requestTaskAtualizada.Status;
+				Snackbar.Add("Tarefa atualizada com sucesso.", Severity.Success);
+			}
+		}
+		StateHasChanged(); // Força a atualização da UI para refletir as mudanças
+	}
+
+	private async Task OpenAddTaskDialog()
+	{
+		var options = new DialogOptions { CloseOnEscapeKey = true };
+		var dialog = await DialogService.ShowAsync<AddTaskDialog>(null, options);
+		var result = await dialog.Result;
+
+		if (!result!.Canceled && result.Data is CreateTaskRequest novaTarefa)
+		{
+			var tarefaCriada = await TarefaService.CreateTarefaAsync(novaTarefa);
+			tasks!.Add(tarefaCriada!);
+			StateHasChanged();
+		}
+	}
+}
