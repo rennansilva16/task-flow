@@ -22,16 +22,16 @@ A aplicação permite acompanhar o ciclo das tarefas de forma direta, utilizando
 ## 📸 Demonstração
 
 ### ➕ Adicionar tarefa
-[![Adicionar tarefa](https://cdn.loom.com/sessions/thumbnails/4dce4ca359ce4cc58485058eb29bf85d-07f3a85ba85a910b-full-play.gif)](https://www.loom.com/share/4dce4ca359ce4cc58485058eb29bf85d)
+![Adicionar tarefa](./docs/images/add-task.gif)
 
 ### 🔄 Mover tarefa
-[![Mover tarefa](https://cdn.loom.com/sessions/thumbnails/2e1ff9e005c846c295d5406fd807408e-57ee84af824195dc-full-play.gif)](https://www.loom.com/share/2e1ff9e005c846c295d5406fd807408e)
+![Mover tarefa](./docs/images/move-task.gif)
 
 ### ✏️ Editar tarefa
-[![Editar tarefa](https://cdn.loom.com/sessions/thumbnails/21ce46eaf58e4b9ca0624ab2139dbe24-450eb74665230ae9-full-play.gif)](https://www.loom.com/share/21ce46eaf58e4b9ca0624ab2139dbe24)
+![Editar tarefa](./docs/images/update-task.gif)
 
 ### ❌ Remover tarefa
-[![Remover tarefa](https://cdn.loom.com/sessions/thumbnails/44ea17c85c964d82a50cd0faf5bd6474-84222d20ddb660a3-full-play.gif)](https://www.loom.com/share/44ea17c85c964d82a50cd0faf5bd6474)
+![Remover tarefa](./docs/images/delete-task.gif)
 
 ---
 
