@@ -1,129 +1,129 @@
-# 🗂️ TaskFlow – Gerenciador de Tarefas
+# 🗂️ TaskFlow – Gerenciador de Tarefas Kanban
 
-**TaskFlow** é uma aplicação de **gerenciamento de tarefas em formato Kanban**, desenvolvida com foco em **organização, clareza visual e evolução contínua da aplicação**.
+O **TaskFlow** é uma aplicação web para gerenciamento de tarefas no formato **Kanban**, focada em organização visual, fluidez na interação e separação clara entre interface, regras de negócio e persistência de dados.
 
-O projeto foi estruturado desde o início com uma **arquitetura moderna**, separando front-end, back-end e camada compartilhada, permitindo que novas funcionalidades sejam adicionadas de forma incremental, sem comprometer a base existente.
-
----
-
-## 🎯 Objetivo do Projeto
-
-O objetivo central do projeto é fornecer uma solução simples e eficiente para **organização de tarefas**, ao mesmo tempo em que serve como um ambiente prático para aplicação de **boas práticas de desenvolvimento**.
-
-A ideia é utilizar um único projeto para:
-
-* Organizar tarefas de forma visual (Kanban)
-* Aplicar conceitos de arquitetura em aplicações web modernas
-* Evoluir funcionalidades de maneira incremental
-* Manter um código limpo, organizado e escalável
-
-Cada nova funcionalidade adicionada representa uma evolução técnica do projeto.
+A aplicação permite acompanhar o ciclo das tarefas de forma direta, utilizando um fluxo baseado em estados que facilita a visualização do progresso.
 
 ---
 
-## 🧠 Conceitos Trabalhados (até o momento)
+## ✨ Funcionalidades
 
-Atualmente, o projeto trabalha principalmente com:
-
-* Arquitetura em camadas (Client, Server e Shared)
-* Separação de responsabilidades entre API e interface
-* Organização de regras de negócio
-* Persistência de dados com ORM
-* Consumo de API REST no front-end
-* Estruturação de aplicações com foco em manutenção e evolução
-
-Esses conceitos serão ampliados continuamente.
+- Quadro Kanban com movimentação de tarefas entre colunas (drag and drop)
+- Criação, edição e exclusão de tarefas
+- Visualização detalhada em modal
+- Organização por status:
+  - Pendentes
+  - Em andamento
+  - Finalizado
+  - Cancelado
 
 ---
 
-## ⚙️ Estado Atual do Projeto
+## 📸 Demonstração
 
-* Aplicação com quadro Kanban funcional
-* Gerenciamento de tarefas com estados:
+### ➕ Adicionar tarefa
+[![Adicionar tarefa](https://cdn.loom.com/sessions/thumbnails/4dce4ca359ce4cc58485058eb29bf85d-07f3a85ba85a910b-full-play.gif)](https://www.loom.com/share/4dce4ca359ce4cc58485058eb29bf85d)
 
-  * Pendentes
-  * Fazendo
-  * Finalizado
-* Criação, edição e exclusão de tarefas
-* Organização das tarefas por categorias
-* Interface com suporte a modo noturno
-* Estrutura preparada para futuras evoluções
+### 🔄 Mover tarefa
+[![Mover tarefa](https://cdn.loom.com/sessions/thumbnails/2e1ff9e005c846c295d5406fd807408e-57ee84af824195dc-full-play.gif)](https://www.loom.com/share/2e1ff9e005c846c295d5406fd807408e)
 
----
+### ✏️ Editar tarefa
+[![Editar tarefa](https://cdn.loom.com/sessions/thumbnails/21ce46eaf58e4b9ca0624ab2139dbe24-450eb74665230ae9-full-play.gif)](https://www.loom.com/share/21ce46eaf58e4b9ca0624ab2139dbe24)
 
-## 🏗️ Arquitetura da Aplicação
-
-A aplicação está organizada em três projetos principais:
-
-* **Client**: Blazor WebAssembly
-* **Server**: ASP.NET Core Web API
-* **Shared**: Biblioteca compartilhada contendo models e contratos
-
-Essa abordagem garante maior clareza no código, facilidade de manutenção e escalabilidade futura.
+### ❌ Remover tarefa
+[![Remover tarefa](https://cdn.loom.com/sessions/thumbnails/44ea17c85c964d82a50cd0faf5bd6474-84222d20ddb660a3-full-play.gif)](https://www.loom.com/share/44ea17c85c964d82a50cd0faf5bd6474)
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🔭 Direção do Produto
 
-* **ASP.NET Core Web API**
-* **Blazor WebAssembly**
-* **Entity Framework Core**
-* **SQL Server**
-* **C#**
-* **RESTful APIs**
-* **Git**
+O TaskFlow está sendo expandido para se tornar uma ferramenta mais completa de organização pessoal, incluindo:
+
+- Criação de categorias personalizadas
+- Autenticação e perfil de usuário
+- Histórico de tarefas com visualização por data
+- Filtros personalizados
+- Registro de anotações e ideias
+- Controle de tempo por tarefa
+- Espaço dedicado ao planejamento detalhado de atividades
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🖥️ Visão Geral
+
+A aplicação é composta por um front-end interativo integrado a uma API responsável pela lógica de negócio e persistência dos dados.
+
+Fluxo principal:
+
+- Criação e edição de tarefas via interface
+- Persistência dos dados na API
+- Atualização do quadro Kanban em tempo real
+- Movimentação de tarefas entre estados
+
+---
+
+## 🏗️ Arquitetura
+
+O projeto está estruturado em camadas bem definidas:
+
+- **Client**  
+  Aplicação em **Blazor WebAssembly**, responsável pela interface
+
+- **API**  
+  ASP.NET Core responsável pelos endpoints e orquestração das operações
+
+- **Application**  
+  Camada de regras de negócio
+
+- **Domain**  
+  Entidades e definições centrais do sistema
+
+- **Infrastructure**  
+  Persistência de dados, acesso ao banco e repositórios
+
+- **Shared**  
+  DTOs e contratos utilizados entre client e server
+
+---
+
+## 🛠️ Tecnologias
+
+- ASP.NET Core Web API
+- Blazor WebAssembly
+- Entity Framework Core
+- SQL Server
+- C#
+- MudBlazor
+
+---
+
+## 🚀 Como executar
 
 ### Pré-requisitos
 
-* .NET SDK instalado
-* SQL Server (local ou em container)
-* Ambiente configurado para execução de aplicações ASP.NET Core e Blazor
+- .NET SDK instalado
+- SQL Server (local ou container)
 
-### Execução
+### Passos
 
-1. Clone o repositório:
+```bash
+git clone https://github.com/rennansilva16/task-flow.git
+````
 
-   ```bash
-   git clone https://github.com/rennansilva16/task-flow.git
-   ```
-
-2. Abra a solução no Visual Studio ou editor de sua preferência.
-
-3. Configure a string de conexão do banco de dados, se necessário.
-
-4. Execute o projeto **Server** (API).
-
-5. Execute o projeto **Client** (Blazor WebAssembly).
+1. Abra a solução no seu editor
+2. Configure a string de conexão no projeto **API**
+3. Execute a API
+4. Execute o projeto **Client**
 
 ---
 
-## 🔮 Evolução Planejada
+## 📌 Status
 
-O projeto será evoluído gradualmente, podendo incluir:
-
-* Autenticação e autorização mais completas
-* Suporte a múltiplos usuários
-* Novos módulos além do gerenciamento de tarefas
-* Melhorias de usabilidade e performance
-* Testes automatizados
-* Aprimoramento da arquitetura conforme o crescimento do sistema
-
-O escopo permanece aberto para evolução contínua.
-
----
-
-## 📌 Status do Projeto
-
-🚧 **Em desenvolvimento contínuo**
-Projeto em evolução, com foco em organização, aprendizado prático e qualidade técnica.
+Aplicação funcional com gerenciamento de tarefas via interface Kanban.
 
 ---
 
 ## 👤 Autor
 
-Desenvolvido por **Rennan Silva**
+**Rennan Silva**
 GitHub: [https://github.com/rennansilva16](https://github.com/rennansilva16)
