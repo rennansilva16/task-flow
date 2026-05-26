@@ -1,7 +1,9 @@
 #!/bin/bash
 
-echo "Matando processos antigos..."
-killall dotnet 2>/dev/null
+echo "Liberando portas..."
+
+kill -9 $(lsof -ti:7206) 2>/dev/null
+kill -9 $(lsof -ti:7215) 2>/dev/null
 
 API_URL="https://localhost:7215"
 CLIENT_URL="https://localhost:7206"
@@ -19,8 +21,12 @@ done
 echo "API pronta!"
 
 cd ../TaskFlow.Web.Client
+
+# 👉 controla o browser aqui
+export DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER=1 
+
 echo "Subindo Client..."
-dotnet run &
+dotnet watch run &
 
 echo "Aguardando Client subir..."
 

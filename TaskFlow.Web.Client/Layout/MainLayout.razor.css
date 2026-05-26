@@ -75,3 +75,32 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+
+
+.drawer-toggle {
+    position: fixed;
+    top: 20px;
+    left: 220px; /* quando aberto */
+    z-index: 1300;
+
+    background-color: #1E293B;
+    color: #E2E8F0;
+
+    border: 1px solid #334155;
+    border-radius: 50%;
+
+    width: 40px;
+    height: 40px;
+
+    transition: all 0.3s ease;
+}
+
+/* Quando drawer fechado */
+.drawer-closed .drawer-toggle {
+    left: 12px;
+}
+
+.drawer-toggle:hover {
+    background-color: #334155;
+    transform: scale(1.05);
+}

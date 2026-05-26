@@ -4,50 +4,138 @@
 @page "/"
 @using TaskFlow.Web.Client.Pages.Modais
 
-<MudPaper>
-	<MudText Typo="Typo.h4" Class="pa-4">TaskFlow - Gerenciamento de Tarefas</MudText>
-	<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="ma-4" OnClick="@(() => OpenAddTaskDialog())">Adicionar Tarefa</MudButton>
-</MudPaper>
-<MudDropContainer T="TaskResponse" Class="d-flex gap-4 pa-4" Items="tasks"
-				  ItemsSelector="@((item, col) => item.Status.ToString() == col)" ItemDropped="TaskUpdated">
+<div class="d-flex flex-column text-white" style="height: 100vh;">
+	<div class="d-flex align-center justify-space-between">
+		<div class="d-flex flex-column">
+			<MudText Typo="Typo.h4" Class="pa-4">TaskFlow</MudText>
+			<MudText Typo="Typo.subtitle1" Class="px-4 pb-4">Gerenciador de Tarefas</MudText>
+		</div>
+		<MudSpacer />
+		<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="ma-4" OnClick="@(() => OpenAddTaskDialog())">
+			Adicionar Tarefa
+		</MudButton>
+	</div>
 
-	<ChildContent>
-		@foreach (var col in columns)
-		{
-			<MudDropZone T="TaskResponse" Style="min-height: 50px;" Identifier="@col"
-						 Class="flex-grow-1 bg-dark text-white rounded">
+	<MudDropContainer T="TaskResponse" Class="d-flex gap-4 pa-4" Items="tasks"
+					  ItemsSelector="@((item, col) => item.Status.ToString() == col)" ItemDropped="TaskUpdated">
 
-				<MudPaper Class="pa-3 mb-2" Style="background-color: #e0e0e0;">
+		<ChildContent>
+			@foreach (var col in columns)
+			{
+				<MudPaper Elevation="1" Class="d-flex flex-column p-4" Style="width: 300px; background-color: #393172;">
+					<div class="d-flex align-center">
+						<MudIcon Icon="@GetColumnIcon(col)" Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")"
+								 Class="mr-2" Size="Size.Small" />
 
-					<MudText Typo="Typo.h6" Class="mb-2">@col</MudText>
+						<div class="d-flex align-center mr-2 justify-center">
+							<MudText Typo=" Typo.h6" Class="text-white">@col</MudText>
+							<MudText Typo="Typo.subtitle2" Class="ml-1 text-white"
+									 Style="background-color: #443b7e; border-radius: 12px; padding: 2px 8px;">
+								@tasks!.Count(t => t.Status.ToString() == col)
+							</MudText>
+						</div>
+						<MudToolBar Class="flex-grow-1 justify-end">
+							<MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
+								<MudMenuItem OnClick="@(() => OpenAddTaskDialog())">
+									<MudIcon Icon="@Icons.Material.Filled.Add"
+											 Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")" Class="mr-2" />
+									Adicionar tarefa
+								</MudMenuItem>
+							</MudMenu>
+						</MudToolBar>
+					</div>
 
+					<MudDropZone T="TaskResponse" Identifier="@col" Style="min-height: 50px;"
+								 Class="d-flex flex-column flex-grow-1 border-radius-4 text-white rounded">
+						<!-- Header da coluna -->
+
+						<MudPaper Class="pa-3 mb-2" Style="background-color: #e0e0e0;">
+
+							<MudText Typo="Typo.h6" Class="mb-2">@col</MudText>
+
+						</MudPaper>
+
+					</MudDropZone>
+					<MudButton StartIcon="@Icons.Material.Filled.Add"
+							   Style="background-color: #443b7e; border-radius: 12px; padding: 2px 8px;" Variant="Variant.Text"
+							   Class="mt-4 text-white" OnClick="@(() => OpenAddTaskDialog())">
+						Adicionar tarefa
+					</MudButton>
 				</MudPaper>
 
-			</MudDropZone>
-		}
-	</ChildContent>
+				
 
-	<ItemRenderer>
-		<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 mb-2">
+			
+			}
+		</ChildContent>
 
-			<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
+		<ItemRenderer>
+			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 text-white" Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer; background-color: #443b7e;")>
+				<div>
+					<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
 
-			<MudText Typo="Typo.body2" Class="mb-1">
-				@context.Descricao
-			</MudText>
+					<MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
+						<MudMenuItem OnClick="@(() => OpenTaskDetails(context))">
+							<MudIcon Icon="@Icons.Material.Filled.Edit"
+									 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-2" />
+							Editar
+						</MudMenuItem>
+						<MudMenuItem OnClick="@(() => OpenTaskDetails(context))">
+							<MudIcon Icon="@Icons.Material.Filled.Delete"
+									 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-2" />
+							Excluir
+						</MudMenuItem>
+					</MudMenu>
+				</div>
+				@if (context.Descricao != null)
+				{
+					<div>
+						<MudText Typo="Typo.body2" Class="mb-1">
+							@context.Descricao
+						</MudText>
+					</div>
+				}
+				@if (context.DataPrazo != null)
+				{
+					<div>
+						<MudIcon Icon="@Icons.Material.Filled.CalendarToday"
+								 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-1" Size="Size.Small" />
+						<MudText Class="p-1" Typo="Typo.caption" Style="@($"color: {GetElementColor(context.Status)};")">
+							@context.DataPrazo?.ToString("dd/MM/yyyy")
+						</MudText>
 
-			<MudText Typo="Typo.caption">
-				Prazo: @context.DataPrazo?.ToString("dd/MM/yyyy")
-			</MudText>
+					</div>
 
-		</MudPaper>
-	</ItemRenderer>
+				}
 
-</MudDropContainer>
+				
+			</MudPaper>
+
+		</ItemRenderer>
+
+	</MudDropContainer>
+</div>
 
 @code {
 	private List<TaskResponse>? tasks = new();
 	private List<string> columns = Enum.GetValues<Status>().Select(s => s.ToString()).ToList();
+	string GetColumnIcon(string column) => column switch
+	{
+
+		nameof(Status.Pendente) => Icons.Material.Filled.Schedule,
+		nameof(Status.Fazendo) => Icons.Material.Filled.Build,
+		nameof(Status.Finalizada) => Icons.Material.Filled.CheckCircle,
+		nameof(Status.Cancelada) => Icons.Material.Filled.Cancel,
+		_ => Icons.Material.Filled.HelpOutline
+	};
+	string GetElementColor(Status status) => status switch
+	{
+		Status.Pendente => "#6c757d", // Cinza
+		Status.Fazendo => "#007bff", // Azul
+		Status.Finalizada => "#28a745", // Verde
+		Status.Cancelada => "#dc3545", // Vermelho
+		_ => "#6c757d" // Padrão para outros casos
+	};
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -82,30 +170,32 @@
 		if (result!.Data is TaskRemoveRequest taskRemoveRequest)
 		{
 			bool excluido = await TarefaService.DeleteTarefaAsync(taskRemoveRequest.Id);
-			if (!excluido) {
+			if (!excluido)
+			{
 				// Mensagem com erro de exclusão
 				Snackbar.Add("Erro ao excluir a tarefa.", Severity.Error);
 				return;
 			}
 			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskRemoveRequest.Id);
-			
+
 			if (tarefa != null)
 			{
 				tasks!.Remove(tarefa);
 				Snackbar.Add("Tarefa excluída com sucesso.", Severity.Success);
 			}
-		} 
+		}
 		// Caso 2: Editou a tarefa
 		else if (result.Data is UpdateTaskRequest requestTaskAtualizada)
 		{
 			var taskAtualizada = await TarefaService.UpdateTarefaAsync(requestTaskAtualizada.Id, requestTaskAtualizada);
-			if (taskAtualizada == null) {
+			if (taskAtualizada == null)
+			{
 				// Mensagem com erro de atualização
 				Snackbar.Add("Erro ao atualizar a tarefa.", Severity.Error);
 				return;
 			}
 			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskAtualizada.Id);
-			
+
 			if (tarefa != null)
 			{
 				tarefa.Titulo = requestTaskAtualizada.Titulo;

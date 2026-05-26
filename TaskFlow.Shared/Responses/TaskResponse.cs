@@ -7,4 +7,5 @@ public class TaskResponse
     public string? Descricao { get; set; }
     public DateOnly? DataPrazo { get; set; }
     public Status Status { get; set; }
-}   
+    public string StatusCol => Status.ToString();
+}

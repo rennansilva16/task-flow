@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor.Utilities
+@inherits LayoutComponentBase
 
 <MudThemeProvider />
 
@@ -6,18 +7,34 @@
 <MudSnackbarProvider />
 <MudPopoverProvider />
 
-<div class="page">
-    <div class="sidebar">
+<MudLayout Style="background-color: #0F172A; height: 100vh;">
+    <MudDrawer Style="background-color: #111827; border-right: 1px solid #c1bcdb;" @bind-open="_drawerOpen" variant="DrawerVariant.Mini" Elevation="1" Class="d-flex flex-column">
+        
         <NavMenu />
-    </div>
+        <MudSpacer />
+        
+        @* Quero colocar Um MudIconButton no lado direito do botao para fica colado no final *@
+        <div class="d-flex justify-content-end p-2">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Style="@($"color: {Colors.LightGreen.Lighten5}")" OnClick="ToggleDrawer">
 
-    <main>
-        <div class="top-row px-4">
-            <a href="/">TaskFlow</a>
+            </MudIconButton>
         </div>
-
-        <article class="content px-4">
+        
+    </MudDrawer>
+     <!-- BOTÃO FLUTUANTE -->
+    <MudMainContent >
+        <MudContainer>
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code
+{
+    private bool _drawerOpen = true;
+
+    private void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
