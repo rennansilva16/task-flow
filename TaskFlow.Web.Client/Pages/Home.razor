@@ -221,5 +221,37 @@
 			StateHasChanged();
 		}
 	}
+
+	private async Task OpenEditTaskDialog(TaskResponse task)
+	{
+		var parameters = new DialogParameters
+		{
+			[nameof(UpdateTaskDialog.Task)] = task
+		};
+		var options = new DialogOptions { CloseOnEscapeKey = true };
+		var dialog = await DialogService.ShowAsync<UpdateTaskDialog>(null, parameters, options);
+		var result = await dialog.Result;
+
+		if (!result!.Canceled && result.Data is UpdateTaskRequest requestTaskAtualizada)
+		{
+			var taskAtualizada = await TarefaService.UpdateTarefaAsync(requestTaskAtualizada.Id, requestTaskAtualizada);
+			if (taskAtualizada == null)
+			{
+				Snackbar.Add("Erro ao atualizar a tarefa.", Severity.Error);
+				return;
+			}
+			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskAtualizada.Id);
+
+			if (tarefa != null)
+			{
+				tarefa.Titulo = requestTaskAtualizada.Titulo;
+				tarefa.Descricao = requestTaskAtualizada.Descricao;
+				tarefa.DataPrazo = requestTaskAtualizada.DataPrazo;
+				tarefa.Status = requestTaskAtualizada.Status;
+				Snackbar.Add("Tarefa atualizada com sucesso.", Severity.Success);
+			}
+			StateHasChanged();
+		}
+	}
 	
 }
