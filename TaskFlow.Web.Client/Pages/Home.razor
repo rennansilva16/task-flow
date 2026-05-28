@@ -22,7 +22,7 @@
 		<ChildContent>
 			@foreach (var col in columns)
 			{
-				<MudPaper Elevation="1" Class="d-flex flex-column p-4" Style="width: 300px; background-color: #393172;">
+				<MudPaper Elevation="1" Class="d-flex flex-column p-4 bg-primary" Style="width: 300px;">
 					<div class="d-flex align-center">
 						<MudIcon Icon="@GetColumnIcon(col)" Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")"
 								 Class="mr-2" Size="Size.Small" />
@@ -70,7 +70,7 @@
 		</ChildContent>
 
 		<ItemRenderer>
-			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 text-white" Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer; background-color: #443b7e;")>
+			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 bg-secondary text-white" Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer;")>
 				<div class="d-flex align-center justify-space-between">
 					<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
 

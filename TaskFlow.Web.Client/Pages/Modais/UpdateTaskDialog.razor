@@ -1,32 +1,41 @@
 @inject ISnackbar Snackbar
 @inject TarefaService TaskService
+<MudPaper Class="d-flex flex-column" Width="400px">
+    <MudDialog>
+        <DialogContent>
+            <MudPaper Elevation="0" Class="d-flex flex-column gap-4">
+                <MudStack Justify="Justify.Center" Row="true" Spacing="1">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" Color="Color.Primary" />
+                    <MudText Typo="Typo.h6">Editar Tarefa</MudText>
+                </MudStack>
+                <MudPaper Elevation="0" Class="p-3">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudTextField Variant="Variant.Outlined" Label="Título" @bind-Value="Task.Titulo"
+                                          FullWidth="true" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField Variant="Variant.Outlined" Label="Descrição" @bind-Value="Task.Descricao"
+                                          FullWidth="true" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudDatePicker Variant="Variant.Outlined" Label="Data de Prazo"
+                                           @bind-Date="datePrazoTemp" />
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudPaper>
 
-<MudDialog>
-    <TitleContent>
+        </DialogContent>
+        <DialogActions>
+            <MudStack Justify="Justify.FlexEnd" Row="true" Spacing="2">
+                <MudButton Color="Color.Primary" OnClick="Salvar">Salvar</MudButton>
+                <MudButton Color="Color.Secondary" OnClick="Fechar">Fechar</MudButton>
+            </MudStack>
+        </DialogActions>
+    </MudDialog>
+</MudPaper>
 
-        <MudStack Justify="Justify.FlexStart" Spacing="1">
-            <MudIcon Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" Color="Color.Primary" />
-            <MudText Typo="Typo.h6">Editar Tarefa</MudText>
-        </MudStack>
-    </TitleContent>
-    <DialogContent>
-        <MudGrid>
-            <MudItem xs="12">
-                <MudTextField Label="Título" @bind-Value="Task.Titulo" FullWidth="true" />
-            </MudItem>
-            <MudItem xs="12">
-                <MudTextField Label="Descrição" @bind-Value="Task.Descricao" FullWidth="true" />
-            </MudItem>
-            <MudItem xs="12">
-                <MudDatePicker Label="Data de Prazo" @bind-Date="datePrazoTemp" />
-            </MudItem>
-        </MudGrid>
-    </DialogContent>
-    <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Salvar">Salvar</MudButton>
-        <MudButton Color="Color.Secondary" OnClick="Fechar">Fechar</MudButton>
-    </DialogActions>
-</MudDialog>
 
 @code {
     [CascadingParameter]
