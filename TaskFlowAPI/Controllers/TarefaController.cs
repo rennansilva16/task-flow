@@ -35,7 +35,7 @@ namespace TaskFlowAPI.Controllers
         public async Task<IActionResult> UpdateTarefa(long id, [FromBody] UpdateTaskRequest request)
         {
             // Lógica para atualizar uma tarefa existente
-            var tarefa = await tarefaService.UpdateTarefa(id, request);
+            UpdateTaskResponse tarefa = await tarefaService.UpdateTarefa(id, request);
             return Ok(tarefa);
         }
 

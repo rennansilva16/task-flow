@@ -1,3 +1,6 @@
+@inject ISnackbar Snackbar
+@inject TarefaService TaskService
+
 <MudDialog>
     <TitleContent>
 
@@ -31,17 +34,40 @@
     [Parameter]
     public TaskResponse Task { get; set; } = default!;
     private DateTime? datePrazoTemp;
-
     protected override void OnInitialized()
     {
-        datePrazoTemp = DateTime.TryParse(Task.DataPrazo?.ToString("dd/MM/yyyy"), out var parsedDate) ? parsedDate: (DateTime?)null;
+        datePrazoTemp = DateTime.TryParse(Task.DataPrazo?.ToString("dd/MM/yyyy"), out var parsedDate) ? parsedDate :
+(DateTime?)null;
     }
 
-    private void Fechar() => MudDialog.Close(DialogResult.Cancel());
-
-    private void Salvar()
+    private void Fechar()
     {
-        Task.DataPrazo = DateOnly.Parse(datePrazoTemp?.ToString("dd/MM/yyyy") ?? string.Empty);
+
+        MudDialog.Close(DialogResult.Cancel());
+
+    }
+
+    private async Task Salvar()
+    {
+        var tarefaAtualizada = new UpdateTaskRequest
+        {
+            Id = Task.Id,
+            Titulo = Task.Titulo,
+            Descricao = Task.Descricao,
+            DataPrazo = DateOnly.Parse(datePrazoTemp?.ToString("dd/MM/yyyy") ?? string.Empty),
+            Status = Task.Status
+        };
+        UpdateTaskResponse? tarefaSalva = await TaskService.UpdateTarefaAsync(Task.Id, tarefaAtualizada);
+
+        if (tarefaSalva == null)
+        {
+            Snackbar.Add("Erro ao atualizar a tarefa. Por favor, tente novamente.", Severity.Error);
+            return;
+        }
+        Task.Titulo = tarefaSalva.Title;
+        Task.Descricao = tarefaSalva.Description;
+        Task.DataPrazo = tarefaSalva.DueDate;
+        Task.Status = tarefaSalva.Status;
         MudDialog.Close(DialogResult.Ok(Task));
     }
 }

@@ -75,7 +75,7 @@
 					<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
 
 					<MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
-						<MudMenuItem OnClick="@(() => OpenTaskDetails(context))">
+						<MudMenuItem OnClick="@(() => OpenEditTaskDialog(context))">
 							<MudIcon Icon="@Icons.Material.Filled.Edit"
 									 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-2" />
 							Editar
@@ -184,17 +184,10 @@
 				Snackbar.Add("Tarefa excluída com sucesso.", Severity.Success);
 			}
 		}
-		// Caso 2: Editou a tarefa
+		// Caso 2: Editou a tarefa - Atualiza a tarefa na lista local para refletir as mudanças feitas no diálogo de edição
 		else if (result.Data is UpdateTaskRequest requestTaskAtualizada)
 		{
-			var taskAtualizada = await TarefaService.UpdateTarefaAsync(requestTaskAtualizada.Id, requestTaskAtualizada);
-			if (taskAtualizada == null)
-			{
-				// Mensagem com erro de atualização
-				Snackbar.Add("Erro ao atualizar a tarefa.", Severity.Error);
-				return;
-			}
-			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskAtualizada.Id);
+			var tarefa = tasks!.FirstOrDefault(t => t.Id == requestTaskAtualizada.Id);
 
 			if (tarefa != null)
 			{
@@ -202,7 +195,6 @@
 				tarefa.Descricao = requestTaskAtualizada.Descricao;
 				tarefa.DataPrazo = requestTaskAtualizada.DataPrazo;
 				tarefa.Status = requestTaskAtualizada.Status;
-				Snackbar.Add("Tarefa atualizada com sucesso.", Severity.Success);
 			}
 		}
 		StateHasChanged(); // Força a atualização da UI para refletir as mudanças

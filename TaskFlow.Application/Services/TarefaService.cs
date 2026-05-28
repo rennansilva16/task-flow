@@ -57,7 +57,7 @@ public class TarefaService
         } : throw new Exception("Erro ao criar tarefa");
     }
 
-    public async Task<TaskResponse> UpdateTarefa(long id, UpdateTaskRequest request)
+    public async Task<UpdateTaskResponse> UpdateTarefa(long id, UpdateTaskRequest request)
     {
         if (request == null)
         {
@@ -76,12 +76,12 @@ public class TarefaService
         var tarefaAtualizada = await tarefaRepository.UpdateTask(tarefa);
         if (tarefaAtualizada == null) throw new Exception("Erro ao atualizar tarefa");
 
-        var response = new TaskResponse()
+        var response = new UpdateTaskResponse()
         {
             Id = tarefaAtualizada.Id,
-            Titulo = tarefaAtualizada.Titulo,
-            Descricao = tarefaAtualizada.Descricao,
-            DataPrazo = tarefaAtualizada.DataPrazo,
+            Title = tarefaAtualizada.Titulo,
+            Description = tarefaAtualizada.Descricao,
+            DueDate = tarefaAtualizada.DataPrazo,
             Status = tarefaAtualizada.Status
         };
         return response;
