@@ -1,0 +1,47 @@
+<MudDialog>
+    <TitleContent>
+
+        <MudStack Justify="Justify.FlexStart" Spacing="1">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" Color="Color.Primary" />
+            <MudText Typo="Typo.h6">Editar Tarefa</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField Label="Título" @bind-Value="Task.Titulo" FullWidth="true" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField Label="Descrição" @bind-Value="Task.Descricao" FullWidth="true" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudDatePicker Label="Data de Prazo" @bind-Date="datePrazoTemp" />
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Salvar">Salvar</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="Fechar">Fechar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter]
+    public TaskResponse Task { get; set; } = default!;
+    private DateTime? datePrazoTemp;
+
+    protected override void OnInitialized()
+    {
+        datePrazoTemp = DateTime.TryParse(Task.DataPrazo?.ToString("dd/MM/yyyy"), out var parsedDate) ? parsedDate: (DateTime?)null;
+    }
+
+    private void Fechar() => MudDialog.Close(DialogResult.Cancel());
+
+    private void Salvar()
+    {
+        Task.DataPrazo = DateOnly.Parse(datePrazoTemp?.ToString("dd/MM/yyyy") ?? string.Empty);
+        MudDialog.Close(DialogResult.Ok(Task));
+    }
+}
