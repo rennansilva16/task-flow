@@ -87,14 +87,14 @@ public class TarefaService
         return response;
     }
 
-    public async Task<bool> DeleteTarefa(long id)
+    public async Task<RemoveTaskResponse> DeleteTarefa(long id)
     {
         var deletada = await tarefaRepository.DeleteTask(id);
-
-        if (!deletada) throw new Exception("Erro ao deletar tarefa");
-
-        return true;
-
+        return new RemoveTaskResponse()
+        {
+            Id = id,
+            Excluido = deletada
+        };
     }
 
     public async Task<TaskResponse> UpdateTaskStatus(long id, Status status)

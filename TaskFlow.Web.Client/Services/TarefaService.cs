@@ -44,10 +44,14 @@ public class TarefaService
         return null;
     }
 
-    public async Task<bool> DeleteTarefaAsync(long id)
+    public async Task<RemoveTaskResponse?> DeleteTarefaAsync(long id)
     {
         var response = await _httpClient.DeleteAsync($"{BaseUrl}/{id}");
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<RemoveTaskResponse>();
+        }
+        throw new Exception("Erro ao excluir tarefa.");
     }
 
     public async Task<TaskResponse> UpdateTaskStatusAsync(long id, Status status)

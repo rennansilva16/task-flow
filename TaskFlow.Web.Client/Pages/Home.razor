@@ -69,7 +69,8 @@
 		</ChildContent>
 
 		<ItemRenderer>
-			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 bg-secondary text-white" Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer;")>
+			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 bg-secondary text-white"
+					  Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer;")>
 				<div class="d-flex align-center justify-space-between">
 					<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
 
@@ -79,7 +80,7 @@
 									 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-2" />
 							Editar
 						</MudMenuItem>
-						<MudMenuItem OnClick="@(() => OpenTaskDetails(context))">
+						<MudMenuItem OnClick="@(() => OpenDeleteTaskDialog(context))">
 							<MudIcon Icon="@Icons.Material.Filled.Delete"
 									 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-2" />
 							Excluir
@@ -166,35 +167,19 @@
 		var result = await dialog.Result;
 
 		// Caso 1: Excluiu a tarefa
-		if (result!.Data is TaskRemoveRequest taskRemoveRequest)
+		if (result!.Data is RemoveTaskResponse taskRemoveResponse && taskRemoveResponse.Excluido)
 		{
-			bool excluido = await TarefaService.DeleteTarefaAsync(taskRemoveRequest.Id);
-			if (!excluido)
-			{
-				// Mensagem com erro de exclusão
-				Snackbar.Add("Erro ao excluir a tarefa.", Severity.Error);
-				return;
-			}
-			var tarefa = tasks!.FirstOrDefault(t => t.Id == taskRemoveRequest.Id);
-
-			if (tarefa != null)
-			{
-				tasks!.Remove(tarefa);
-				Snackbar.Add("Tarefa excluída com sucesso.", Severity.Success);
-			}
+			tasks!.Remove(tasks.First(t => t.Id == taskRemoveResponse.Id));
 		}
 		// Caso 2: Editou a tarefa - Atualiza a tarefa na lista local para refletir as mudanças feitas no diálogo de edição
 		else if (result.Data is UpdateTaskRequest requestTaskAtualizada)
 		{
-			var tarefa = tasks!.FirstOrDefault(t => t.Id == requestTaskAtualizada.Id);
+			var tarefa = tasks!.First(t => t.Id == requestTaskAtualizada.Id);
 
-			if (tarefa != null)
-			{
-				tarefa.Titulo = requestTaskAtualizada.Titulo;
-				tarefa.Descricao = requestTaskAtualizada.Descricao;
-				tarefa.DataPrazo = requestTaskAtualizada.DataPrazo;
-				tarefa.Status = requestTaskAtualizada.Status;
-			}
+			tarefa.Titulo = requestTaskAtualizada.Titulo;
+			tarefa.Descricao = requestTaskAtualizada.Descricao;
+			tarefa.DataPrazo = requestTaskAtualizada.DataPrazo;
+			tarefa.Status = requestTaskAtualizada.Status;
 		}
 		StateHasChanged(); // Força a atualização da UI para refletir as mudanças
 	}
@@ -244,5 +229,22 @@
 			StateHasChanged();
 		}
 	}
-	
+
+	private async Task OpenDeleteTaskDialog(TaskResponse task)
+	{
+		var parameters = new DialogParameters
+		{
+			[nameof(DeleteTaskDialog.Task)] = task
+		};
+		var options = new DialogOptions { CloseOnEscapeKey = true };
+		var dialog = await DialogService.ShowAsync<DeleteTaskDialog>(null, parameters, options);
+		var result = await dialog.Result;
+
+		if (!result!.Canceled && result.Data is RemoveTaskResponse removeTaskDto && removeTaskDto.Excluido)
+		{
+			tasks!.Remove(tasks.First(t => t.Id == removeTaskDto.Id));
+			StateHasChanged();
+		}
+	}
+
 }

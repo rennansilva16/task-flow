@@ -1,3 +1,6 @@
+@inject TarefaService TaskService
+@inject ISnackbar Snackbar
+
 <MudDialog>
     <DialogContent>
         <MudPaper Class="pa-4">
@@ -29,7 +32,14 @@
     private async Task Excluir()
     {
         // Lógica para excluir a tarefa usando o ID
+        RemoveTaskResponse? response = await TaskService.DeleteTarefaAsync(Task.Id);
         // Exemplo: await TaskService.DeleteTask(Task.Id);
-        MudDialog.Close(DialogResult.Ok(true)); // Retorna true para indicar que a tarefa foi excluída
+        if (response == null || !response.Excluido)
+        {
+            // Mensagem de erro ao excluir
+            Snackbar.Add("Erro ao excluir a tarefa.", Severity.Error);
+            return;
+        }
+        MudDialog.Close(DialogResult.Ok(response)); // Retorna true para indicar que a tarefa foi excluída
     }
 }

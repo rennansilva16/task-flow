@@ -42,9 +42,9 @@ namespace TaskFlowAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTarefa(long id)
         {
-            var deletada = await tarefaService.DeleteTarefa(id);
-            if (!deletada) return NotFound("Tarefa não encontrada.");
-            return Ok("Tarefa deletada com sucesso.");
+            RemoveTaskResponse response = await tarefaService.DeleteTarefa(id);
+            if (!response.Excluido) return NotFound("Tarefa não encontrada.");
+            return Ok(response);
         }
 
         [HttpPut("{id}/status")]

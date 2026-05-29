@@ -24,7 +24,7 @@
     </DialogContent>
     <DialogActions>
             <MudButton Color="Color.Primary" OnClick="OpenEditTaskDialog">Editar</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Excluir">Excluir</MudButton>
+        <MudButton Color="Color.Primary" OnClick="OpenDeleteTaskDialog">Excluir</MudButton>
         <MudButton Color="Color.Secondary" OnClick="Fechar">Fechar</MudButton>
     </DialogActions>
 </MudDialog>
@@ -40,25 +40,6 @@
     {
         MudDialog.Close(Updated ? DialogResult.Ok(Task) : DialogResult.Cancel());
     } 
-
-    private async Task Excluir()
-    {
-        var confirm = await DialogService.ShowMessageBoxAsync(
-            "Confirmação",
-            "Tem certeza que deseja excluir esta tarefa?",
-            yesText: "Sim",
-            noText: "Não");
-
-        if (confirm == true)
-        {
-            var request = new TaskRemoveRequest
-            {
-                Id = Task.Id
-            };
-
-            MudDialog.Close(DialogResult.Ok(request));
-        }
-    }
 
     private async Task OpenEditTaskDialog()
     {
@@ -80,6 +61,23 @@
             Task.Status = requestTaskAtualizada.Status;
             Updated = true;
             StateHasChanged(); // Força a atualização da UI para refletir as mudanças
+        }
+    }
+    private async Task OpenDeleteTaskDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            [nameof(DeleteTaskDialog.Task)] = Task
+        };
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        var dialog = await DialogService.ShowAsync<DeleteTaskDialog>("Excluir Tarefa", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result!.Canceled && result.Data is RemoveTaskResponse removeTaskDto && removeTaskDto.Excluido)
+        {
+            MudDialog.Close(DialogResult.Ok(removeTaskDto));
         }
     }
 }
