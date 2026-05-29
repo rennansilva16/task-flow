@@ -172,14 +172,14 @@
 			tasks!.Remove(tasks.First(t => t.Id == taskRemoveResponse.Id));
 		}
 		// Caso 2: Editou a tarefa - Atualiza a tarefa na lista local para refletir as mudanças feitas no diálogo de edição
-		else if (result.Data is UpdateTaskRequest requestTaskAtualizada)
+		else if (result.Data is UpdateTaskResponse response)
 		{
-			var tarefa = tasks!.First(t => t.Id == requestTaskAtualizada.Id);
+			var tarefa = tasks!.First(t => t.Id == response.Id);
 
-			tarefa.Titulo = requestTaskAtualizada.Titulo;
-			tarefa.Descricao = requestTaskAtualizada.Descricao;
-			tarefa.DataPrazo = requestTaskAtualizada.DataPrazo;
-			tarefa.Status = requestTaskAtualizada.Status;
+			tarefa.Titulo = response.Title;
+			tarefa.Descricao = response.Description;
+			tarefa.DataPrazo = response.DueDate;
+			tarefa.Status = response.Status;
 		}
 		StateHasChanged(); // Força a atualização da UI para refletir as mudanças
 	}

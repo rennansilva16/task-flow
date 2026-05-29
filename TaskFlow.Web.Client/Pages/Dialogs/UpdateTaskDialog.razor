@@ -48,9 +48,7 @@
 
     private void Fechar()
     {
-
         MudDialog.Close(DialogResult.Cancel());
-
     }
 
     private async Task Salvar()
@@ -60,7 +58,7 @@
             Id = Task.Id,
             Titulo = Task.Titulo,
             Descricao = Task.Descricao,
-            DataPrazo = DateOnly.Parse(datePrazoTemp?.ToString("dd/MM/yyyy") ?? string.Empty),
+            DataPrazo = DateOnly.TryParse(datePrazoTemp?.ToString("dd/MM/yyyy"), out var parsedDate) ? parsedDate : (DateOnly?)null,
             Status = Task.Status
         };
         UpdateTaskResponse? tarefaSalva = await TaskService.UpdateTarefaAsync(Task.Id, tarefaAtualizada);
@@ -70,10 +68,6 @@
             Snackbar.Add("Erro ao atualizar a tarefa. Por favor, tente novamente.", Severity.Error);
             return;
         }
-        Task.Titulo = tarefaSalva.Title;
-        Task.Descricao = tarefaSalva.Description;
-        Task.DataPrazo = tarefaSalva.DueDate;
-        Task.Status = tarefaSalva.Status;
-        MudDialog.Close(DialogResult.Ok(Task));
+        MudDialog.Close(DialogResult.Ok(tarefaSalva));
     }
 }

@@ -44,11 +44,12 @@
     private IMudDialogInstance MudDialog { get; set; } = default!;
     [Parameter]
     public TaskResponse Task { get; set; } = default!;
+    private UpdateTaskResponse? UpdatedTask { get; set; }
     private bool Updated { get; set; } = false;
 
     private void Fechar()
     {
-        MudDialog.Close(Updated ? DialogResult.Ok(Task) : DialogResult.Cancel());
+        MudDialog.Close(Updated ? DialogResult.Ok(UpdatedTask) : DialogResult.Cancel());
     }
 
     private async Task OpenEditTaskDialog()
@@ -63,12 +64,13 @@
 
         var result = await dialog.Result;
 
-        if (result!.Data is UpdateTaskRequest requestTaskAtualizada)
+        if (result!.Data is UpdateTaskResponse response)
         {
-            Task.Titulo = requestTaskAtualizada.Titulo;
-            Task.Descricao = requestTaskAtualizada.Descricao;
-            Task.DataPrazo = requestTaskAtualizada.DataPrazo;
-            Task.Status = requestTaskAtualizada.Status;
+            Task.Titulo = response.Title;
+            Task.Descricao = response.Description;
+            Task.DataPrazo = response.DueDate;
+            Task.Status = response.Status;
+            UpdatedTask = response;
             Updated = true;
             StateHasChanged(); // Força a atualização da UI para refletir as mudanças
         }
