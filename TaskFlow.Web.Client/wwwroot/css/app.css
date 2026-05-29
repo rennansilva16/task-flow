@@ -121,11 +121,3 @@ code {
 .form-floating>.form-control:focus::placeholder {
     text-align: start;
 }
-
-:root {
-    --bs-primary: #393172;
-    --bs-primary-rgb: 57, 49, 114;
-
-    --bs-secondary: #443b7e;
-    --bs-secondary-rgb: 68, 59, 126;
-}

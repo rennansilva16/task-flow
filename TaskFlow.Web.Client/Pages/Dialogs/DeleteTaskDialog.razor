@@ -3,12 +3,14 @@
 
 <MudDialog>
     <DialogContent>
-        <MudPaper Class="pa-4">
-            <MudPaper Class="pa-4" Elevation="0">
-                <MudText Typo="Typo.h6" GutterBottom="true">Excluir Tarefa</MudText>
-                <MudText Typo="Typo.body1">Tem certeza de que deseja excluir esta tarefa?</MudText>
-            </MudPaper>
+        <MudPaper Elevation="0" Class="d-flex flex-column gap-4">
+            <MudStack Justify="Justify.Center" Row="true" Spacing="1">
+                <MudIcon Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Color="Color.Error" />
+                <MudText Typo="Typo.h6">Excluir Tarefa</MudText>
+            </MudStack>
+            <MudText Typo="Typo.body1">Tem certeza de que deseja excluir esta tarefa?</MudText>
         </MudPaper>
+
     </DialogContent>
     <DialogActions>
         <MudStack Justify="Justify.FlexEnd" Row="true" Spacing="2">

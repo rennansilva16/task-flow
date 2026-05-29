@@ -27,11 +27,7 @@ public class TarefaService
                 Status = t.Status
             }).ToList();
         }
-        else
-        {
-            return null;
-        }
-        return tarefasResponse;
+        return tarefasResponse != null ? tarefasResponse : new List<TaskResponse>();
     }
     public async Task<TaskResponse> CreateTarefa(CreateTaskRequest request)
     {

@@ -11,17 +11,11 @@ public class TarefaService
         _httpClient = httpClient;
     }
 
-    public async Task<List<TaskResponse>?> GetTarefasAsync()
+    public async Task<List<TaskResponse>> GetTarefasAsync()
     {   
         var tarefasEncontradas = await _httpClient.GetFromJsonAsync<List<TaskResponse>>(BaseUrl);
 
-        if (tarefasEncontradas == null || !tarefasEncontradas.Any())
-        {
-            return null;
-        } else
-        {
-            return tarefasEncontradas;
-        }
+        return tarefasEncontradas != null ? tarefasEncontradas : new List<TaskResponse>();
     }
 
     public async Task<TaskResponse?> CreateTarefaAsync(CreateTaskRequest request)

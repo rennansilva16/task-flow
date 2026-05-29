@@ -21,7 +21,7 @@ namespace TaskFlowAPI.Controllers
         public async Task<IActionResult> GetAllTasks()
         {
             var tarefas = await tarefaService.GetAllTasks();
-            return tarefas != null ? Ok(tarefas) : NotFound("Nenhuma tarefa encontrada.");
+            return Ok(tarefas);
         }
 
         [HttpPost]

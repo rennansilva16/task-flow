@@ -71,7 +71,7 @@
         };
         var options = new DialogOptions { CloseOnEscapeKey = true };
 
-        var dialog = await DialogService.ShowAsync<DeleteTaskDialog>("Excluir Tarefa", parameters, options);
+        var dialog = await DialogService.ShowAsync<DeleteTaskDialog>(null, parameters, options);
 
         var result = await dialog.Result;
 
