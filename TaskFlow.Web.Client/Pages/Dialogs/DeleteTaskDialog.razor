@@ -1,0 +1,35 @@
+<MudDialog>
+    <DialogContent>
+        <MudPaper Class="pa-4">
+            <MudPaper Class="pa-4" Elevation="0">
+                <MudText Typo="Typo.h6" GutterBottom="true">Excluir Tarefa</MudText>
+                <MudText Typo="Typo.body1">Tem certeza de que deseja excluir esta tarefa?</MudText>
+            </MudPaper>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudStack Justify="Justify.FlexEnd" Row="true" Spacing="2">
+            <MudButton Color="Color.Error" OnClick="Excluir">Excluir</MudButton>
+            <MudButton Color="Color.Secondary" OnClick="Fechar">Cancelar</MudButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter]
+    public TaskResponse Task { get; set; } = default!;
+
+    private void Fechar()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+
+    private async Task Excluir()
+    {
+        // Lógica para excluir a tarefa usando o ID
+        // Exemplo: await TaskService.DeleteTask(Task.Id);
+        MudDialog.Close(DialogResult.Ok(true)); // Retorna true para indicar que a tarefa foi excluída
+    }
+}
