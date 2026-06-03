@@ -1,4 +1,4 @@
-@* @inject ISnackbar Snackbar
+@inject ISnackbar Snackbar
 @inject TarefaService TarefaService
 @inject IDialogService DialogService
 @page "/test"
@@ -80,8 +80,8 @@
 		// Caso 1: Excluiu a tarefa
 		if (result!.Data is TaskRemoveRequest taskRemoveRequest)
 		{
-			bool excluido = await TarefaService.DeleteTarefaAsync(taskRemoveRequest.Id);
-			if (!excluido) {
+			var excluido = await TarefaService.DeleteTarefaAsync(taskRemoveRequest.Id);
+			if (!excluido!.Excluido) {
 				// Mensagem com erro de exclusão
 				Snackbar.Add("Erro ao excluir a tarefa.", Severity.Error);
 				return;
@@ -130,4 +130,4 @@
 			StateHasChanged();
 		}
 	}
-} *@
+}

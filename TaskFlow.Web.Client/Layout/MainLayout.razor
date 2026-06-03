@@ -7,22 +7,23 @@
 <MudSnackbarProvider />
 <MudPopoverProvider />
 
-<MudLayout Style="background-color: #0F172A; height: 100vh;">
-    <MudDrawer Style="background-color: #111827; border-right: 1px solid #c1bcdb;" @bind-open="_drawerOpen" variant="DrawerVariant.Mini" Elevation="1" Class="d-flex flex-column">
-        
+<MudLayout>
+    <MudDrawer Style="border-right: 1px solid #c1bcdb;" @bind-open="_drawerOpen" variant="DrawerVariant.Mini"
+               Elevation="1" Class="d-flex flex-column bg-secondary">
+
         <NavMenu />
         <MudSpacer />
-        
+
         @* Quero colocar Um MudIconButton no lado direito do botao para fica colado no final *@
         <div class="d-flex justify-content-end p-2">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Style="@($"color: {Colors.LightGreen.Lighten5}")" OnClick="ToggleDrawer">
+            <MudIconButton Class="text-white" Icon="@Icons.Material.Filled.Menu" OnClick="ToggleDrawer">
 
             </MudIconButton>
         </div>
-        
+
     </MudDrawer>
-     <!-- BOTÃO FLUTUANTE -->
-    <MudMainContent >
+    <!-- BOTÃO FLUTUANTE -->
+    <MudMainContent>
         <MudContainer>
             @Body
         </MudContainer>

@@ -121,3 +121,17 @@ code {
 .form-floating>.form-control:focus::placeholder {
     text-align: start;
 }
+
+:root {
+    --secondary-color: #443b7e;
+    --tertiary-color: #362f66;
+
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.bg-tertiary {
+    background-color: var(--tertiary-color) !important;
+}

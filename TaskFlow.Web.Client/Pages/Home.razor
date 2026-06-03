@@ -10,7 +10,7 @@
 			<MudText Typo="Typo.subtitle1" Class="px-4 pb-4">Gerenciador de Tarefas</MudText>
 		</div>
 		<MudSpacer />
-		<MudButton Color="Color.Primary" Variant="Variant.Filled" Class="ma-4" OnClick="@(() => OpenAddTaskDialog())">
+		<MudButton Variant="Variant.Filled" Class="ma-4 bg-secondary text-white" OnClick="@(() => OpenAddTaskDialog())">
 			Adicionar Tarefa
 		</MudButton>
 	</div>
@@ -21,13 +21,13 @@
 		<ChildContent>
 			@foreach (var col in columns)
 			{
-				<MudPaper Elevation="1" Class="d-flex flex-column p-4 bg-primary" Style="width: 300px;">
+				<MudPaper Elevation="1" Class="d-flex flex-column p-4" Style="width: 300px;">
 					<div class="d-flex align-center">
 						<MudIcon Icon="@GetColumnIcon(col)" Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")"
 								 Class="mr-2" Size="Size.Small" />
 
 						<div class="d-flex align-center mr-2 justify-center">
-							<MudText Typo=" Typo.h6" Class="text-white">@col</MudText>
+							<MudText Typo=" Typo.h6">@col</MudText>
 							<MudText Typo="Typo.subtitle2" Class="ml-1 text-white"
 									 Style="background-color: #443b7e; border-radius: 12px; padding: 2px 8px;">
 								@tasks!.Count(t => t.Status.ToString() == col)
@@ -55,22 +55,17 @@
 						</MudPaper>
 
 					</MudDropZone>
-					<MudButton StartIcon="@Icons.Material.Filled.Add"
-							   Style="background-color: #443b7e; border-radius: 12px; padding: 2px 8px;" Variant="Variant.Text"
-							   Class="mt-4 text-white" OnClick="@(() => OpenAddTaskDialog())">
+					<MudButton StartIcon="@Icons.Material.Filled.Add" Style="border-radius: 12px; padding: 2px 8px;"
+							   Variant="Variant.Text" Class="bg-secondary mt-4 text-white" OnClick="@(() => OpenAddTaskDialog())">
 						Adicionar tarefa
 					</MudButton>
 				</MudPaper>
 
-				
-
-			
 			}
 		</ChildContent>
 
 		<ItemRenderer>
-			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3 bg-secondary text-white"
-					  Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer;")>
+			<MudPaper @onclick="() => OpenTaskDetails(context)" Class="pa-3" Style=@($"border-left: 4px solid {GetElementColor(context.Status)};margin: 4px 0; cursor: pointer;")>
 				<div class="d-flex align-center justify-space-between">
 					<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
 
@@ -110,7 +105,6 @@
 
 				
 			</MudPaper>
-
 		</ItemRenderer>
 
 	</MudDropContainer>
