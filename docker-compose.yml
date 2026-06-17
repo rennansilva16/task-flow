@@ -1,0 +1,31 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Docker123@"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  api: 
+    image: taskflow-api:latest
+    container_name: taskflow-api
+    depends_on:
+      - sqlserver
+    environment:
+      ConnectionStrings__TaskFlowConnection: "Server=sqlserver;Database=TaskFlow;User Id=sa;Password=Docker123@;TrustServerCertificate=true;"
+    ports:
+      - "7215:8080"
+  client:
+    image: taskflow-client:latest
+    container_name: taskflow-client
+    depends_on:
+      - api
+    ports:
+      - "7206:80"
+
+volumes:
+  sqlserver_data:

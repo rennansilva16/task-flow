@@ -1,64 +1,69 @@
 ﻿@inject ISnackbar Snackbar
 @inject TarefaService TarefaService
 @inject IDialogService DialogService
+@inject IJSRuntime JsRuntime
 @page "/"
 
 <div class="d-flex flex-column text-white" style="height: 100vh;">
 	<MudDropContainer T="TaskResponse" Class="pa-4" Items="tasks"
-					  ItemsSelector="@((item, col) => item.Status.ToString() == col)" ItemDropped="TaskUpdated">
+					  ItemsSelector="@((item, col) => item.Status.ToString() == col)" ItemPicked="OnItemPicked"
+					  ItemDropped="TaskUpdated">
 
 		<ChildContent>
-			<MudGrid>
+			@* <MudGrid> *@
+			<MudPaper Class="d-flex gap-4 overflow-auto" Style="height: 100%;">
+
+			
 				@foreach (var col in columns)
 				{
-					<MudItem xs="12" sm="6" md="3">
-						<MudPaper Elevation="1" Class="d-flex flex-column h-100 p-4">
-							<div class="d-flex align-center">
-								<MudIcon Icon="@GetColumnIcon(col)"
-										 Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")" Class="mr-2"
-										 Size="Size.Small" />
+					@* <MudItem xs="12" sm="6" md="3"> *@
+					<MudPaper Elevation="1" Class="d-flex flex-column h-100 p-4">
+						<div class="d-flex align-center">
+							<MudIcon Icon="@GetColumnIcon(col)"
+									 Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")" Class="mr-2"
+									 Size="Size.Small" />
 
-								<div class="d-flex align-center mr-2 justify-center">
-									<MudText Typo=" Typo.h6">@col</MudText>
-									<MudText Typo="Typo.subtitle2" Class="ml-1 text-white"
-											 Style="background-color: #443b7e; border-radius: 12px; padding: 2px 8px;">
-										@tasks!.Count(t => t.Status.ToString() == col)
-									</MudText>
-								</div>
-								<MudToolBar Class="flex-grow-1 justify-end">
-									<MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
-										<MudMenuItem OnClick="@(() => OpenAddTaskDialog())">
-											<MudIcon Icon="@Icons.Material.Filled.Add"
-													 Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")"
-													 Class="mr-2" />
-											Adicionar tarefa
-										</MudMenuItem>
-									</MudMenu>
-								</MudToolBar>
+							<div class="d-flex align-center mr-2 justify-center">
+								<MudText Typo=" Typo.h6">@col</MudText>
+								<MudText Typo="Typo.subtitle2" Class="ml-1 text-white"
+										 Style="background-color: #443b7e; border-radius: 12px; padding: 2px 8px;">
+									@tasks!.Count(t => t.Status.ToString() == col)
+								</MudText>
 							</div>
+							<MudToolBar Class="flex-grow-1 justify-end">
+								<MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
+									<MudMenuItem OnClick="@(() => OpenAddTaskDialog())">
+										<MudIcon Icon="@Icons.Material.Filled.Add"
+												 Style="@($"color: {GetElementColor(Enum.Parse<Status>(col))};")" Class="mr-2" />
+										Adicionar tarefa
+									</MudMenuItem>
+								</MudMenu>
+							</MudToolBar>
+						</div>
 
-							<MudDropZone T="TaskResponse" Identifier="@col" Style="min-height: 50px;"
-										 Class="d-flex flex-column flex-grow-1 border-radius-4 text-white rounded">
-								<!-- Header da coluna -->
+						<MudDropZone T="TaskResponse" Identifier="@col" Style="min-height: 50px;"
+									 Class="d-flex flex-column flex-grow-1 border-radius-4 text-white rounded">
+							<!-- Header da coluna -->
 
-								<MudPaper Class="pa-3 mb-2" Style="background-color: #e0e0e0;">
+							<MudPaper Class="pa-3 mb-2" Style="background-color: #e0e0e0;">
 
-									<MudText Typo="Typo.h6" Class="mb-2">@col</MudText>
+								<MudText Typo="Typo.h6" Class="mb-2">@col</MudText>
 
-								</MudPaper>
+							</MudPaper>
 
-							</MudDropZone>
-							<MudButton StartIcon="@Icons.Material.Filled.Add" Style="border-radius: 12px; padding: 2px 8px;"
-									   Variant="Variant.Text" Class="bg-secondary mt-4 text-white"
-									   OnClick="@(() => OpenAddTaskDialog())">
-								Adicionar tarefa
-							</MudButton>
-						</MudPaper>
-					</MudItem>
+						</MudDropZone>
+						<MudButton StartIcon="@Icons.Material.Filled.Add" Style="border-radius: 12px; padding: 2px 8px;"
+								   Variant="Variant.Text" Class="bg-secondary mt-4 text-white"
+								   OnClick="@(() => OpenAddTaskDialog())">
+							Adicionar tarefa
+						</MudButton>
+					</MudPaper>
+					@* </MudItem> *@
 
 					
 				}
-			</MudGrid>
+			</MudPaper>
+			@* </MudGrid> *@
 
 		</ChildContent>
 
@@ -141,6 +146,14 @@
 		if (info.Item.Status == novoStatus) return; // Evita chamadas desnecessárias à API
 		var tarefaAtualizada = await TarefaService.UpdateTaskStatusAsync(info.Item.Id, novoStatus);
 		info.Item.Status = tarefaAtualizada.Status; // Atualiza o status localmente para refletir a mudança
+		StateHasChanged(); // Força a atualização da UI para refletir a mudança
+		await JsRuntime.InvokeVoidAsync("stopAutoScroll"); // Para o auto scroll após a tarefa ser solta na nova coluna
+	}
+
+	private async Task OnItemPicked(MudDragAndDropItemTransaction<TaskResponse> transaction)
+	{
+		Console.WriteLine($"Tarefa: {transaction.Item?.Titulo}");
+		await JsRuntime.InvokeVoidAsync("startAutoScroll");
 	}
 
 	private async Task OpenTaskDetails(TaskResponse task)
@@ -238,5 +251,4 @@
 			StateHasChanged();
 		}
 	}
-
 }

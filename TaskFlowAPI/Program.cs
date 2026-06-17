@@ -28,7 +28,9 @@ namespace WorksheetAPI
 {
     options.AddPolicy("AllowBlazor", policy =>
     {
-        policy.WithOrigins("https://localhost:7206")
+        policy.WithOrigins("https://localhost:7206",
+        "http://localhost:7206",
+         "http://192.168.0.79:7206")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -59,11 +61,10 @@ namespace WorksheetAPI
             }
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
 
             // Configurar para abrir no swagger
 
