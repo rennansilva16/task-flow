@@ -73,6 +73,18 @@
 					<MudText Typo="Typo.subtitle1">@context.Titulo</MudText>
 
 					<MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Primary" Size="Size.Small">
+						<MudMenu Label="Alterar status">
+
+							@foreach (var status in Enum.GetValues<Status>())
+							{
+								if (status == context.Status)
+									continue;
+
+								<MudMenuItem Label="@status.ToString()"
+											 OnClick="@(() => UpdateTaskStatus(context, status))" />
+							}
+						</MudMenu>
+						<MudDivider />
 						<MudMenuItem OnClick="@(() => OpenEditTaskDialog(context))">
 							<MudIcon Icon="@Icons.Material.Filled.Edit"
 									 Style="@($"color: {GetElementColor(context.Status)};")" Class="mr-2" />
@@ -148,6 +160,14 @@
 		info.Item.Status = tarefaAtualizada.Status; // Atualiza o status localmente para refletir a mudança
 		StateHasChanged(); // Força a atualização da UI para refletir a mudança
 		await JsRuntime.InvokeVoidAsync("stopAutoScroll"); // Para o auto scroll após a tarefa ser solta na nova coluna
+	}
+
+	private async Task UpdateTaskStatus(TaskResponse task, Status novoStatus)
+	{
+		if (task.Status == novoStatus) return; // Evita chamadas desnecessárias à API
+		var tarefaAtualizada = await TarefaService.UpdateTaskStatusAsync(task.Id, novoStatus);
+		task.Status = tarefaAtualizada.Status; // Atualiza o status localmente para refletir a mudança
+		StateHasChanged(); // Força a atualização da UI para refletir a mudança
 	}
 
 	private async Task OnItemPicked(MudDragAndDropItemTransaction<TaskResponse> transaction)
