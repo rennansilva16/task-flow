@@ -30,7 +30,7 @@ namespace WorksheetAPI
     {
         policy.WithOrigins("https://localhost:7206",
         "http://localhost:7206",
-         "http://192.168.0.79:7206")
+         "http://192.168.0.12:7206")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
