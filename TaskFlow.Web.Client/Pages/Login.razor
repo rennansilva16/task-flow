@@ -1,0 +1,23 @@
+@page "/login"
+@* Criar uma tela de login utilizando MudBlazor *@
+@layout AuthLayout
+
+<MudPaper Class="d-flex flex-column align-items-center p-4" Style="max-width: 400px; margin: auto;">
+    <MudText Typo="Typo.h5" Class="mb-4">Bem-vindo de volta!</MudText>
+    <MudTextField @bind-Value="username" Label="Usuário" Variant="Variant.Outlined" Class="mb-3" FullWidth="true" />
+    <MudTextField @bind-Value="password" Label="Senha" Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
+                  InputType="InputType.Password" />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnterLogin" FullWidth="true">Entrar</MudButton>
+</MudPaper>
+
+@code {
+    private string username = string.Empty;
+    private string password = string.Empty;
+
+    private void EnterLogin()
+    {
+        // Lógica de autenticação aqui
+        // Por exemplo, chamar um serviço de autenticação e redirecionar para a página principal se for bem-sucedido
+    }
+
+}

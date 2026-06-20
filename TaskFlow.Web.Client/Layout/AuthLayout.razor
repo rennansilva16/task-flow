@@ -1,0 +1,36 @@
+@inherits LayoutComponentBase
+
+<MudThemeProvider />
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+
+<MudLayout>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Small" Class="mt-12">
+            <MudPaper Elevation="2" Class="pa-6">
+
+                <MudStack Row="true"
+                          Justify="Justify.Center"
+                          AlignItems="AlignItems.Center"
+                          Spacing="2"
+                          Class="mb-6">
+
+                    <MudIcon Icon="@Icons.Material.Filled.Task"
+                             Size="Size.Large"
+                             Color="Color.Primary" />
+
+                    <MudText Typo="Typo.h4"
+                             Color="Color.Primary">
+                        TaskFlow
+                    </MudText>
+
+                </MudStack>
+
+                @Body
+
+            </MudPaper>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
