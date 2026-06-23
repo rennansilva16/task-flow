@@ -1,7 +1,6 @@
 using TaskFlow.Infrastructure.Repositories;
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
-using TaskFlowData.Models;
 
 public class TarefaService
 {
