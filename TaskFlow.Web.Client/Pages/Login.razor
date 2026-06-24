@@ -7,7 +7,14 @@
     <MudTextField @bind-Value="username" Label="Usuário" Variant="Variant.Outlined" Class="mb-3" FullWidth="true" />
     <MudTextField @bind-Value="password" Label="Senha" Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
                   InputType="InputType.Password" />
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnterLogin" FullWidth="true">Entrar</MudButton>
+    <MudStack>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnterLogin" FullWidth="true">Entrar
+        </MudButton>
+        <MudText Typo="Typo.body2" Class="mt-2">
+            Ainda não tem uma conta? <MudLink Href="/CadastroUsuario">Cadastre-se</MudLink>
+        </MudText>
+    </MudStack>
+
 </MudPaper>
 
 @code {

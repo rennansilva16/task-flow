@@ -12,5 +12,6 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["TaskFlowAPI:BaseUrl"] ?? throw new InvalidOperationException("Base URL da API não configurada.")) });
 
 builder.Services.AddScoped<TarefaService>();
+builder.Services.AddScoped<UserService>();
 
 await builder.Build().RunAsync();

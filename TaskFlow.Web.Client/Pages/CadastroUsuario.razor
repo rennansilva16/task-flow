@@ -1,0 +1,101 @@
+@inject UserService UserService
+
+@page "/CadastroUsuario"
+@* Criar uma tela de cadastro de usuário utilizando MudBlazor *@
+@layout AuthLayout
+
+<MudPaper Class="d-flex flex-column align-items-center p-4" Style="max-width: 600px; margin: auto;">
+    <MudText Typo="Typo.h5" Class="mb-4">Cadastro de Usuário</MudText>
+    <MudForm Model="@usuarioRequest" @ref="form">
+        <MudGrid Spacing="2">
+            <MudItem xs="12">
+                <MudTextField @bind-Value="usuarioRequest.Nome" Label="Nome" Required="true"
+                              RequiredError="Nome é obrigatório"
+                              Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
+                              Validation="new Func<string, string>(ValidarNome)" />
+            </MudItem>
+
+            <MudSpacer />
+
+            <MudItem xs="12">
+                <MudTextField @bind-Value="usuarioRequest.Login" Label="Login" Required="true"
+                              RequiredError="Login é obrigatório"
+                              Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
+                              Validation="new Func<string, string>(ValidarLogin)" />
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudTextField @bind-Value="usuarioRequest.Senha" Label="Senha" Required="true"
+                              RequiredError="Senha é obrigatória"
+                              Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
+                              InputType="InputType.Password"
+                              Validation="new Func<string, string>(ValidarSenha)" />
+            </MudItem>
+        </MudGrid>
+
+        <MudButton Disabled="!form.IsValid"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="RegisterUser"
+                   FullWidth="true">
+            Cadastrar
+        </MudButton>
+    </MudForm>
+
+    @if (cadastroSucesso)
+    {
+        <MudText Typo="Typo.body2" Class="mt-2 text-success">
+            Cadastro realizado com sucesso! <MudLink Href="/login">Clique aqui para fazer login</MudLink>
+        </MudText>
+    }
+    else if (cadastroFalha)
+    {
+        <MudText Typo="Typo.body2" Class="mt-2 text-danger">
+            Ocorreu um erro ao cadastrar o usuário. Por favor, tente novamente.
+        </MudText>
+    }
+</MudPaper>
+
+@code {
+    private MudForm form = null!;
+    private CreateUserRequest usuarioRequest = new();
+    private bool cadastroSucesso;
+    private bool cadastroFalha;
+
+    private async Task RegisterUser()
+    {
+        await form.ValidateAsync();
+
+        if (form.IsValid)
+        {
+            var usuarioResponse = await UserService.CreateUserAsync(usuarioRequest);
+            cadastroSucesso = usuarioResponse != null;
+            cadastroFalha = !cadastroSucesso;
+        }
+    }
+
+    private string ValidarNome(string nome)
+    {
+        if (string.IsNullOrWhiteSpace(nome)) return "Nome é obrigatório";
+        if (nome.Length < 3) return "Nome deve ter pelo menos 3 caracteres";
+        if (nome.Length > 50) return "Nome deve ter no máximo 50 caracteres";
+        return string.Empty;
+    }
+
+    private string ValidarLogin(string login)
+    {
+        if (string.IsNullOrWhiteSpace(login)) return "Login é obrigatório";
+        if (login.Length < 4) return "Login deve ter pelo menos 4 caracteres";
+        if (login.Contains(" ")) return "Login não pode conter espaços";
+        if (login.Length > 20) return "Login deve ter no máximo 20 caracteres";
+        return string.Empty;
+    }
+
+    private string ValidarSenha(string senha)
+    {
+        if (string.IsNullOrWhiteSpace(senha)) return "Senha é obrigatória";
+        if (senha.Length < 6) return "Senha deve ter pelo menos 6 caracteres";
+        if (senha.Length > 20) return "Senha deve ter no máximo 20 caracteres";
+        return string.Empty;
+    }
+}
