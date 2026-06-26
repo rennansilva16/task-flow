@@ -1,11 +1,11 @@
 using System.Net.Http.Json;
 
-public class UserService
+public class UserServiceAPI
 {
     private readonly HttpClient _httpClient;
-    private const string BaseUrl = "api/usuario";
+    private const string BaseUrl = "api/user";
 
-    public UserService(HttpClient httpClient)
+    public UserServiceAPI(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

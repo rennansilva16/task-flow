@@ -1,4 +1,4 @@
-@inject UserService UserService
+@inject UserServiceAPI UserServiceAPI
 
 @page "/CadastroUsuario"
 @* Criar uma tela de cadastro de usuário utilizando MudBlazor *@
@@ -68,7 +68,7 @@
 
         if (form.IsValid)
         {
-            var usuarioResponse = await UserService.CreateUserAsync(usuarioRequest);
+            var usuarioResponse = await UserServiceAPI.CreateUserAsync(usuarioRequest);
             cadastroSucesso = usuarioResponse != null;
             cadastroFalha = !cadastroSucesso;
         }

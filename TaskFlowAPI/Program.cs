@@ -1,6 +1,7 @@
 
 using System;
 using Microsoft.EntityFrameworkCore;
+using TaskFlow.Application.Services;
 using TaskFlow.Infrastructure.Repositories;
 
 namespace WorksheetAPI
@@ -19,7 +20,10 @@ namespace WorksheetAPI
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<TarefaRepository>();
+            builder.Services.AddScoped<UserRepository>();
+
             builder.Services.AddScoped<TarefaService>();
+            builder.Services.AddScoped<UserService>();
 
 
             builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));

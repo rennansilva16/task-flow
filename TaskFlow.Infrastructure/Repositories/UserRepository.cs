@@ -1,0 +1,18 @@
+namespace TaskFlow.Infrastructure.Repositories;
+
+public class UserRepository
+{
+    private readonly TaskFlowDbContext _context;
+
+    public UserRepository(TaskFlowDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Usuario> CreateUserAsync(Usuario usuario)
+    {
+        _context.Usuarios.Add(usuario);
+        await _context.SaveChangesAsync();
+        return usuario;
+    }
+}
