@@ -1,11 +1,13 @@
-@page "/login"
-@* Criar uma tela de login utilizando MudBlazor *@
+@inject UserServiceAPI UserServiceAPI
+@inject NavigationManager NavigationManager
+
 @layout AuthLayout
+@page "/login"
 
 <MudPaper Class="d-flex flex-column align-items-center p-4" Style="max-width: 400px; margin: auto;">
     <MudText Typo="Typo.h5" Class="mb-4">Bem-vindo de volta!</MudText>
-    <MudTextField @bind-Value="username" Label="Usuário" Variant="Variant.Outlined" Class="mb-3" FullWidth="true" />
-    <MudTextField @bind-Value="password" Label="Senha" Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
+    <MudTextField @bind-Value="loginRequest.Login" Label="Usuário" Variant="Variant.Outlined" Class="mb-3" FullWidth="true" />
+    <MudTextField @bind-Value="loginRequest.Password" Label="Senha" Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
                   InputType="InputType.Password" />
     <MudStack>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnterLogin" FullWidth="true">Entrar
@@ -13,18 +15,38 @@
         <MudText Typo="Typo.body2" Class="mt-2">
             Ainda não tem uma conta? <MudLink Href="/CadastroUsuario">Cadastre-se</MudLink>
         </MudText>
+        @if (loginFailed)
+        {
+            <MudText Typo="Typo.body2" Color="Color.Error" Class="mt-2">@errorMessage</MudText>
+        }
     </MudStack>
 
 </MudPaper>
 
 @code {
-    private string username = string.Empty;
-    private string password = string.Empty;
+    private LoginRequest loginRequest = new LoginRequest();
+    private string errorMessage = string.Empty;
+    private bool loginFailed = false;
 
-    private void EnterLogin()
+    private async Task EnterLogin()
     {
-        // Lógica de autenticação aqui
-        // Por exemplo, chamar um serviço de autenticação e redirecionar para a página principal se for bem-sucedido
+        loginFailed = false;
+        var loginResponse = await UserServiceAPI.LoginAsync(loginRequest);
+
+        if (loginResponse != null)
+        {
+            // to do: Armazena o token JWT no localStorage
+            
+
+            // Redireciona para a página inicial
+            NavigationManager.NavigateTo("/Home");
+        }
+        else
+        {
+            // Exibe uma mensagem de erro
+            loginFailed = true;
+            errorMessage = "Falha no login. Verifique suas credenciais.";
+        }
     }
 
 }

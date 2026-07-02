@@ -1,4 +1,5 @@
 using TaskFlow.Infrastructure.Repositories;
+using TaskFlow.Shared.Requests;
 
 namespace TaskFlow.Application.Services;
 
@@ -29,4 +30,28 @@ public class UserService
         };
         return userResponse;
     }    
+
+    public async Task<LoginResponse?> LoginAsync(LoginRequest request)
+    {
+        var usuario = await _userRepository.GetUserByLoginAsync(request.Login);
+
+        if (usuario == null || usuario.Senha != request.Password)
+        {
+            return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
+        }
+
+        UserResponse userResponse = new UserResponse
+        {
+            Id = usuario.Id,
+            Nome = usuario.Nome,
+            Login = usuario.Login
+        };
+
+        LoginResponse loginResponse = new LoginResponse
+        {
+            Usuario = userResponse
+        };
+
+        return loginResponse;
+    }
 }

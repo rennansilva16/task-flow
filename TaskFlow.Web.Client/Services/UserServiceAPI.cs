@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using TaskFlow.Shared.Requests;
 
 public class UserServiceAPI
 {
@@ -16,6 +17,16 @@ public class UserServiceAPI
         if (response.IsSuccessStatusCode)
         {
             return await response.Content.ReadFromJsonAsync<UserResponse>();
+        }
+        return null;
+    }
+
+    public async Task<LoginResponse?> LoginAsync(LoginRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync($"{BaseUrl}/login", request);
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<LoginResponse>();
         }
         return null;
     }

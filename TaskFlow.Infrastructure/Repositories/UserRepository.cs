@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace TaskFlow.Infrastructure.Repositories;
 
 public class UserRepository
@@ -14,5 +16,10 @@ public class UserRepository
         _context.Usuarios.Add(usuario);
         await _context.SaveChangesAsync();
         return usuario;
+    }
+
+    public async Task<Usuario?> GetUserByLoginAsync(string login)
+    {
+        return await _context.Usuarios.FirstOrDefaultAsync(u => u.Login == login);
     }
 }
