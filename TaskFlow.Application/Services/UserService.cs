@@ -33,6 +33,9 @@ public class UserService
 
     public async Task<LoginResponse?> LoginAsync(LoginRequest request)
     {
+        // Validar senha
+        // Criar TOken
+        // Retornar LoginResponse com o token e informações do usuário
         var usuario = await _userRepository.GetUserByLoginAsync(request.Login);
 
         if (usuario == null || usuario.Senha != request.Password)
