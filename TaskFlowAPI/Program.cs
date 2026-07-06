@@ -1,6 +1,7 @@
 
 using System;
 using Microsoft.EntityFrameworkCore;
+using TaskFlow.Application.Authentication;
 using TaskFlow.Application.Services;
 using TaskFlow.Infrastructure.Repositories;
 
@@ -24,9 +25,12 @@ namespace WorksheetAPI
 
             builder.Services.AddScoped<TarefaService>();
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
 
 
             builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));
+
+            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
             builder.Services.AddCors(options =>
 {

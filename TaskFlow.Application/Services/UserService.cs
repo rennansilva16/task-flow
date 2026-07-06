@@ -1,3 +1,4 @@
+using TaskFlow.Application.Authentication;
 using TaskFlow.Infrastructure.Repositories;
 using TaskFlow.Shared.Requests;
 
@@ -6,10 +7,12 @@ namespace TaskFlow.Application.Services;
 public class UserService
 {
     private readonly UserRepository _userRepository;
+    private readonly IJwtService _jwtService;
 
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository, IJwtService jwtService)
     {
         _userRepository = userRepository;
+        _jwtService = jwtService;
     }
 
     public async Task<UserResponse> CreateUserAsync(CreateUserRequest request)
@@ -43,6 +46,8 @@ public class UserService
             return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
         }
 
+        string token = _jwtService.GenerateToken(usuario);
+
         UserResponse userResponse = new UserResponse
         {
             Id = usuario.Id,
@@ -52,7 +57,8 @@ public class UserService
 
         LoginResponse loginResponse = new LoginResponse
         {
-            Usuario = userResponse
+            Usuario = userResponse,
+            Token = token
         };
 
         return loginResponse;
