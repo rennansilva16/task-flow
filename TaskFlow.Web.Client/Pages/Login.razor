@@ -1,4 +1,4 @@
-@inject UserServiceAPI UserServiceAPI
+@inject AuthenticationService AuthenticationService
 @inject NavigationManager NavigationManager
 
 @layout AuthLayout
@@ -31,13 +31,10 @@
     private async Task EnterLogin()
     {
         loginFailed = false;
-        var loginResponse = await UserServiceAPI.LoginAsync(loginRequest);
+        var success = await AuthenticationService .LoginAsync(loginRequest);
 
-        if (loginResponse != null)
+        if (success)
         {
-            // to do: Armazena o token JWT no localStorage
-            
-
             // Redireciona para a página inicial
             NavigationManager.NavigateTo("/Home");
         }
