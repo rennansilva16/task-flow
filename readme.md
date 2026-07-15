@@ -19,28 +19,6 @@ A aplicação permite acompanhar o ciclo das tarefas de forma direta, utilizando
 
 ---
 
-## 📸 Demonstração
-
-### ➕ Adicionar tarefa
-![Adicionar tarefa](./docs/images/AdicionarTarefa.gif)
-
-### 🔄 Mover tarefa(Drag Drop)
-![Mover tarefa](./docs/images/ArrastarTarefaDragDrop.gif)
-
-### 🔄 Mover tarefa(Botão)
-![Mover tarefa](./docs/images/ArrastarTarefaBotao.gif)
-
-### ✏️ Editar tarefa
-![Editar tarefa](./docs/images/EditarTarefa.gif)
-
-### ❌ Remover tarefa
-![Remover tarefa](./docs/images/ExcluirTarefa.gif)
-
-### 🔄 Visualizar Tarefa
-![Mover tarefa](./docs/images/VisualizarTarefa.gif)
-
-
----
 
 ## 🔭 Direção do Produto
 
@@ -66,6 +44,29 @@ Fluxo principal:
 - Persistência dos dados na API
 - Atualização do quadro Kanban em tempo real
 - Movimentação de tarefas entre estados
+
+---
+
+## 📸 Demonstração
+
+### ➕ Adicionar tarefa
+![Adicionar tarefa](./docs/images/AdicionarTarefa.gif)
+
+### 🔄 Mover tarefa(Drag Drop)
+![Mover tarefa](./docs/images/ArrastarTarefaDragDrop.gif)
+
+### 🔄 Mover tarefa(Botão)
+![Mover tarefa](./docs/images/ArrastarTarefaBotao.gif)
+
+### ✏️ Editar tarefa
+![Editar tarefa](./docs/images/EditarTarefa.gif)
+
+### ❌ Remover tarefa
+![Remover tarefa](./docs/images/ExcluirTarefa.gif)
+
+### 🔄 Visualizar Tarefa
+![Mover tarefa](./docs/images/VisualizarTarefa.gif)
+
 
 ---
 
