@@ -22,16 +22,23 @@ A aplicação permite acompanhar o ciclo das tarefas de forma direta, utilizando
 ## 📸 Demonstração
 
 ### ➕ Adicionar tarefa
-![Adicionar tarefa](./docs/images/add-task.gif)
+![Adicionar tarefa](./docs/images/AdicionarTarefa.gif)
 
-### 🔄 Mover tarefa
-![Mover tarefa](./docs/images/move-task.gif)
+### 🔄 Mover tarefa(Drag Drop)
+![Mover tarefa](./docs/images/ArrastarTarefaDragDrop.gif)
+
+### 🔄 Mover tarefa(Botão)
+![Mover tarefa](./docs/images/ArrastarTarefaBotao.gif)
 
 ### ✏️ Editar tarefa
-![Editar tarefa](./docs/images/update-task.gif)
+![Editar tarefa](./docs/images/EditarTarefa.gif)
 
 ### ❌ Remover tarefa
-![Remover tarefa](./docs/images/delete-task.gif)
+![Remover tarefa](./docs/images/ExcluirTarefa.gif)
+
+### 🔄 Visualizar Tarefa
+![Mover tarefa](./docs/images/VisualizarTarefa.gif)
+
 
 ---
 
