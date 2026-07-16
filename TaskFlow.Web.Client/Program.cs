@@ -22,6 +22,7 @@ builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthenticationStateProvider>());
 
 builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<IJwtParser, JwtParser>();
 
 
 await builder.Build().RunAsync();

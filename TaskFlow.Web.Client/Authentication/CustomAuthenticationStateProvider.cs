@@ -8,11 +8,12 @@ namespace TaskFlow.Web.Client.Authentication;
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly IStorageService _storageService;
-    private const string AuthenticationType = "jwt"; // Tipo de autenticação, pode ser "jwt" ou outro valor que você preferir
+    private readonly IJwtParser _jwtParser;
 
-    public CustomAuthenticationStateProvider(IStorageService storageService)
+    public CustomAuthenticationStateProvider(IStorageService storageService, IJwtParser jwtParser)
     {
         _storageService = storageService;
+        _jwtParser = jwtParser;
     }
 
     // Essa classe gerencia o estado de autenticação da aplicação.
@@ -26,19 +27,14 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
             return new AuthenticationState(anonymous);
         }
-        var claims = ParseClaimsFromToken(token);
-
-
-        var identity = new ClaimsIdentity(claims, AuthenticationType); // Usuário autenticado
-        var principal = new ClaimsPrincipal(identity);
+        var principal = _jwtParser.CreateClaimsPrincipal(token);
         return new AuthenticationState(principal);
     }
 
-    private IEnumerable<Claim> ParseClaimsFromToken(string token)
+    public void MarkUserAsAuthenticated(string token)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var jwt = tokenHandler.ReadJwtToken(token);
+        var principal = _jwtParser.CreateClaimsPrincipal(token);
 
-        return jwt.Claims;
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(principal)));
     }
 }

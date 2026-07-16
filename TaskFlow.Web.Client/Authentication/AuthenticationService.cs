@@ -9,10 +9,12 @@ public class AuthenticationService
     // Ela também faz: Logout => Apaga Token => Apaga Sessão => Vai para Login
     private readonly UserServiceAPI _userServiceAPI;
     private readonly IStorageService _storageService;
+    private readonly CustomAuthenticationStateProvider _authenticationStateProvider;
 
-    public AuthenticationService(UserServiceAPI userServiceAPI, IStorageService storageService)
+    public AuthenticationService(UserServiceAPI userServiceAPI, CustomAuthenticationStateProvider authenticationStateProvider, IStorageService storageService)
     {
         _userServiceAPI = userServiceAPI;
+        _authenticationStateProvider = authenticationStateProvider;
         _storageService = storageService;
     }
 
@@ -22,15 +24,13 @@ public class AuthenticationService
 
         if (response != null)
         {
+            // Salvar o token no armazenamento local
             await _storageService.SetItemAsync("token", response.Token);
-            var valor = await _storageService.GetItemAsync<string>("token");
-            Console.WriteLine($"Token armazenado: {valor}");
 
-            
-            // Salvar o token e o usuário no local storage ou session storage
             // Atualizar o estado de autenticação
+            _authenticationStateProvider.MarkUserAsAuthenticated(response.Token);
             return true;
-        }
+        }   
         return false;
     }
 }
