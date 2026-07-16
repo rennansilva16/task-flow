@@ -33,4 +33,10 @@ public class AuthenticationService
         }   
         return false;
     }
+
+    public async Task<bool> IsAuthenticatedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        return authState.User.Identity?.IsAuthenticated ?? false;
+    }
 }

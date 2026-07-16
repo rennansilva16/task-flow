@@ -24,20 +24,21 @@
 
 </MudPaper>
 
-<AuthorizeView>
-    <Authorized>
-        Usuário autenticado
-    </Authorized>
-
-    <NotAuthorized>
-        Usuário NÃO autenticado
-    </NotAuthorized>
-</AuthorizeView>
-
 @code {
     private LoginRequest loginRequest = new LoginRequest();
     private string errorMessage = string.Empty;
     private bool loginFailed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthenticationService.IsAuthenticatedAsync();
+
+        if (isAuthenticated)
+        {
+            // Redireciona para a página inicial se o usuário já estiver autenticado
+            NavigationManager.NavigateTo("/Home");
+        }
+    }
 
     private async Task EnterLogin()
     {
