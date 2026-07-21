@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
@@ -17,6 +18,7 @@ public class TarefaController : Controller
         this.tarefaService = tarefaService;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllTasks()
     {

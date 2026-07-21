@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using TaskFlow.Application.Authentication;
 using TaskFlow.Application.Services;
 using TaskFlow.Infrastructure.Repositories;
+using TaskFlowAPI.Configurations;
 
-namespace WorksheetAPI
+namespace TaskFlowAPI
 {
     public class Program
     {
@@ -30,8 +31,6 @@ namespace WorksheetAPI
 
             builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));
 
-            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-
             builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazor", policy =>
@@ -43,6 +42,8 @@ namespace WorksheetAPI
               .AllowAnyMethod();
     });
 });
+
+            builder.Services.AddJwtAuthentication(builder.Configuration);
 
             var app = builder.Build();
 
@@ -82,8 +83,9 @@ namespace WorksheetAPI
 
             app.UseCors("AllowBlazor");
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
