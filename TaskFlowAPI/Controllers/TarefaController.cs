@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.Application.Services.Interfaces;
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
 namespace TaskFlowAPI.Controllers;
@@ -9,9 +10,9 @@ public class TarefaController : Controller
 {
     private readonly ILogger<TarefaController> _logger;
     private readonly TaskFlowDbContext _context;
-    private readonly TarefaService tarefaService;
+    private readonly ITarefaService tarefaService;
 
-    public TarefaController(ILogger<TarefaController> logger, TaskFlowDbContext context, TarefaService tarefaService)
+    public TarefaController(ILogger<TarefaController> logger, TaskFlowDbContext context, ITarefaService tarefaService)
     {
         _logger = logger;
         _context = context;

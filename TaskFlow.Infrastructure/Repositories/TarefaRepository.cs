@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using TaskFlow.Infrastructure.Repositories.Interfaces;
 
 namespace TaskFlow.Infrastructure.Repositories;
 
-public class TarefaRepository
+public class TarefaRepository : ITarefaRepository
 {
     private readonly TaskFlowDbContext context;
 

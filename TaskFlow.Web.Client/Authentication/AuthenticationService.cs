@@ -1,17 +1,19 @@
 using TaskFlow.Shared.Requests;
+using TaskFlow.Web.Client.Authentication.Interfaces;
+using TaskFlow.Web.Client.Services.Interfaces;
 using TaskFlow.Web.Client.Services.Storage;
 
 namespace TaskFlow.Web.Client.Authentication;
 
-public class AuthenticationService
+public class AuthenticationService : IAuthenticationService
 {
     // Ela faz: Login =>  Recebe LoginResponse => Salva Token => Salva Usuário =>  Atualiza AuthenticationState => Redireciona
     // Ela também faz: Logout => Apaga Token => Apaga Sessão => Vai para Login
-    private readonly UserServiceAPI _userServiceAPI;
+    private readonly IUserServiceAPI _userServiceAPI;
     private readonly IStorageService _storageService;
     private readonly CustomAuthenticationStateProvider _authenticationStateProvider;
 
-    public AuthenticationService(UserServiceAPI userServiceAPI, CustomAuthenticationStateProvider authenticationStateProvider, IStorageService storageService)
+    public AuthenticationService(IUserServiceAPI userServiceAPI, CustomAuthenticationStateProvider authenticationStateProvider, IStorageService storageService)
     {
         _userServiceAPI = userServiceAPI;
         _authenticationStateProvider = authenticationStateProvider;

@@ -3,7 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Application.Authentication;
 using TaskFlow.Application.Services;
+using TaskFlow.Application.Services.Interfaces;
 using TaskFlow.Infrastructure.Repositories;
+using TaskFlow.Infrastructure.Repositories.Interfaces;
 using TaskFlowAPI.Configurations;
 
 namespace TaskFlowAPI
@@ -21,11 +23,11 @@ namespace TaskFlowAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<TarefaRepository>();
-            builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-            builder.Services.AddScoped<TarefaService>();
-            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<ITarefaService, TarefaService>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
 
 

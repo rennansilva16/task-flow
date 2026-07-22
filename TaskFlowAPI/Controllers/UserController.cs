@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Application.Services;
+using TaskFlow.Application.Services.Interfaces;
 using TaskFlow.Shared.Requests;
 
 namespace TaskFlowAPI.Controllers;
@@ -8,9 +9,9 @@ namespace TaskFlowAPI.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
-    public UserController(UserService userService)
+    public UserController(IUserService userService)
     {
         _userService = userService;
     }

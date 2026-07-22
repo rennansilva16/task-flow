@@ -1,4 +1,4 @@
-@inject TarefaService TarefaService
+@inject ITarefaServiceAPI TarefaService
 
 <MudDialog>
     <DialogContent>
@@ -21,7 +21,7 @@
     private string descricao = string.Empty;
     private DateTime? dataPrazoTemp = null;
 
-    private async Task AdicionarTarefa()
+    private void AdicionarTarefa()
     {
         var novaTarefa = new CreateTaskRequest
         {

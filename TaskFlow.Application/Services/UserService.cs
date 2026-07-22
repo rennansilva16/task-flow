@@ -1,15 +1,17 @@
 using TaskFlow.Application.Authentication;
+using TaskFlow.Application.Services.Interfaces;
 using TaskFlow.Infrastructure.Repositories;
+using TaskFlow.Infrastructure.Repositories.Interfaces;
 using TaskFlow.Shared.Requests;
 
 namespace TaskFlow.Application.Services;
 
-public class UserService
+public class UserService : IUserService
 {
-    private readonly UserRepository _userRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IJwtService _jwtService;
 
-    public UserService(UserRepository userRepository, IJwtService jwtService)
+    public UserService(IUserRepository userRepository, IJwtService jwtService)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;

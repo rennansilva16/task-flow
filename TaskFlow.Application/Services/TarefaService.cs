@@ -1,12 +1,14 @@
+using TaskFlow.Application.Services.Interfaces;
 using TaskFlow.Infrastructure.Repositories;
+using TaskFlow.Infrastructure.Repositories.Interfaces;
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
 
-public class TarefaService
+public class TarefaService : ITarefaService
 {
-    private readonly TarefaRepository tarefaRepository;
+    private readonly ITarefaRepository tarefaRepository;
 
-    public TarefaService(TarefaRepository tarefaRepository)
+    public TarefaService(ITarefaRepository tarefaRepository)
     {
         this.tarefaRepository = tarefaRepository;
     }

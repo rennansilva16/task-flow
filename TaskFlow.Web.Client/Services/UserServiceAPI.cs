@@ -1,7 +1,8 @@
 using System.Net.Http.Json;
 using TaskFlow.Shared.Requests;
+using TaskFlow.Web.Client.Services.Interfaces;
 
-public class UserServiceAPI
+public class UserServiceAPI : IUserServiceAPI
 {
     private readonly HttpClient _httpClient;
     private const string BaseUrl = "api/user";

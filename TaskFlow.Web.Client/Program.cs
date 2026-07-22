@@ -5,6 +5,8 @@ using TaskFlow.Web.Client;
 using TaskFlow.Web.Client.Authentication;
 using TaskFlow.Web.Client.Services.Storage;
 using Microsoft.AspNetCore.Components.Authorization;
+using TaskFlow.Web.Client.Services.Interfaces;
+using TaskFlow.Web.Client.Authentication.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -15,9 +17,9 @@ builder.Services.AddAuthorizationCore();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["TaskFlowAPI:BaseUrl"] ?? throw new InvalidOperationException("Base URL da API não configurada.")) });
 
-builder.Services.AddScoped<TarefaService>();
-builder.Services.AddScoped<UserServiceAPI>();
-builder.Services.AddScoped<AuthenticationService>();
+builder.Services.AddScoped<ITarefaServiceAPI, TarefaService>();
+builder.Services.AddScoped<IUserServiceAPI, UserServiceAPI>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthenticationStateProvider>());
 

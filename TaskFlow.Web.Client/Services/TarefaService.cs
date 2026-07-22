@@ -1,7 +1,8 @@
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
 using System.Net.Http.Json;
-public class TarefaService
+using TaskFlow.Web.Client.Services.Interfaces;
+public class TarefaService : ITarefaServiceAPI
 {
     private readonly HttpClient _httpClient;
     private const string BaseUrl = "api/tarefa";
