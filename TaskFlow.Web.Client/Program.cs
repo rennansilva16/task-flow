@@ -15,13 +15,23 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
 builder.Services.AddAuthorizationCore();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["TaskFlowAPI:BaseUrl"] ?? throw new InvalidOperationException("Base URL da API não configurada.")) });
+builder.Services.AddHttpClient("TaskFlowAPI",client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["TaskFlowAPI:BaseUrl"] ?? throw new InvalidOperationException("Base URL da API não configurada."));
+}).AddHttpMessageHandler<AuthorizationHandler>();
 
+builder.Services.AddScoped<HttpClient>(sp =>
+{
+    var factory = sp.GetRequiredService<IHttpClientFactory>();
+    return factory.CreateClient("TaskFlowAPI");
+});
+    
 builder.Services.AddScoped<ITarefaServiceAPI, TarefaService>();
 builder.Services.AddScoped<IUserServiceAPI, UserServiceAPI>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthenticationStateProvider>());
+builder.Services.AddScoped<AuthorizationHandler>();
 
 builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<IJwtParser, JwtParser>();
