@@ -1,4 +1,4 @@
-namespace TaskFlow.Application.Authentication;
+namespace TaskFlow.Application.Identity;
 
 public interface IJwtService
 {

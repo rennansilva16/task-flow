@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskFlow.Infrastructure\TaskFlow.Infrastructure.csproj" />
     <ProjectReference Include="..\TaskFlow.Shared\TaskFlow.Shared.csproj" />
   </ItemGroup>
 

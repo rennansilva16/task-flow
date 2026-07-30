@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TaskFlow.Infrastructure.Repositories.Interfaces;
+using TaskFlow.Application.Persistence;
 
 namespace TaskFlow.Infrastructure.Repositories;
 

@@ -1,11 +1,9 @@
-
-using System;
 using Microsoft.EntityFrameworkCore;
-using TaskFlow.Application.Authentication;
+using TaskFlow.Application.Identity;
+using TaskFlow.Application.Persistence;
 using TaskFlow.Application.Services;
-using TaskFlow.Application.Services.Interfaces;
+using TaskFlow.Infrastructure.Identity;
 using TaskFlow.Infrastructure.Repositories;
-using TaskFlow.Infrastructure.Repositories.Interfaces;
 using TaskFlowAPI.Configurations;
 
 namespace TaskFlowAPI
@@ -22,6 +20,7 @@ namespace TaskFlowAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -29,6 +28,7 @@ namespace TaskFlowAPI
             builder.Services.AddScoped<ITarefaService, TarefaService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 
             builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));

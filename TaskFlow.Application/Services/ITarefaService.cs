@@ -1,7 +1,7 @@
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
 
-namespace TaskFlow.Application.Services.Interfaces;
+namespace TaskFlow.Application.Services;
 
 public interface ITarefaService
 {

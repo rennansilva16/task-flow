@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskFlow.Application.Services.Interfaces;
+using TaskFlow.Application.Services;
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
 namespace TaskFlowAPI.Controllers;
@@ -8,14 +8,10 @@ namespace TaskFlowAPI.Controllers;
 [Route("api/[controller]")]
 public class TarefaController : Controller
 {
-    private readonly ILogger<TarefaController> _logger;
-    private readonly TaskFlowDbContext _context;
     private readonly ITarefaService tarefaService;
 
-    public TarefaController(ILogger<TarefaController> logger, TaskFlowDbContext context, ITarefaService tarefaService)
+    public TarefaController(ITarefaService tarefaService)
     {
-        _logger = logger;
-        _context = context;
         this.tarefaService = tarefaService;
     }
 

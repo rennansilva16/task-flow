@@ -1,4 +1,4 @@
-namespace TaskFlow.Application.Authentication;
+namespace TaskFlow.Infrastructure.Identity;
 
 public class JwtOptions
 {

@@ -1,16 +1,18 @@
-using TaskFlow.Application.Services.Interfaces;
-using TaskFlow.Infrastructure.Repositories;
-using TaskFlow.Infrastructure.Repositories.Interfaces;
+using TaskFlow.Application.Identity;
+using TaskFlow.Application.Persistence;
 using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
+namespace TaskFlow.Application.Services;
 
 public class TarefaService : ITarefaService
 {
     private readonly ITarefaRepository tarefaRepository;
+    private readonly ICurrentUser currentUser;
 
-    public TarefaService(ITarefaRepository tarefaRepository)
+    public TarefaService(ITarefaRepository tarefaRepository, ICurrentUser currentUser)
     {
         this.tarefaRepository = tarefaRepository;
+        this.currentUser = currentUser;
     }
 
     public async Task<List<TaskResponse>?> GetAllTasks()

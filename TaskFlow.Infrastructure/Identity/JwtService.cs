@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Unicode;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TaskFlow.Application.Identity;
 
-namespace TaskFlow.Application.Authentication;
+namespace TaskFlow.Infrastructure.Identity;
 
 public class JwtService : IJwtService
 {

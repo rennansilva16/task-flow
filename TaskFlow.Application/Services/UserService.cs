@@ -1,7 +1,5 @@
-using TaskFlow.Application.Authentication;
-using TaskFlow.Application.Services.Interfaces;
-using TaskFlow.Infrastructure.Repositories;
-using TaskFlow.Infrastructure.Repositories.Interfaces;
+using TaskFlow.Application.Identity;
+using TaskFlow.Application.Persistence;
 using TaskFlow.Shared.Requests;
 
 namespace TaskFlow.Application.Services;

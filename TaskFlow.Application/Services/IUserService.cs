@@ -1,6 +1,6 @@
 using TaskFlow.Shared.Requests;
 
-namespace TaskFlow.Application.Services.Interfaces;
+namespace TaskFlow.Application.Services;
 
 public interface IUserService
 {

@@ -1,4 +1,4 @@
-namespace TaskFlow.Infrastructure.Repositories.Interfaces;
+namespace TaskFlow.Application.Persistence;
 
 public interface ITarefaRepository
 {

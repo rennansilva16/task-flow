@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TaskFlow.Application.Authentication;
+using TaskFlow.Infrastructure.Identity;
 
 namespace TaskFlowAPI.Configurations;
 
