@@ -8,11 +8,13 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IJwtService _jwtService;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public UserService(IUserRepository userRepository, IJwtService jwtService)
+    public UserService(IUserRepository userRepository, IJwtService jwtService, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<UserResponse> CreateUserAsync(CreateUserRequest request)
@@ -21,7 +23,7 @@ public class UserService : IUserService
         {
             Nome = request.Nome,
             Login = request.Login,
-            Senha = request.Senha
+            Senha = _passwordHasher.Hash(request.Senha)
         };
         Usuario usuarioCriado = await _userRepository.CreateUserAsync(usuario);
 
@@ -41,7 +43,16 @@ public class UserService : IUserService
         // Retornar LoginResponse com o token e informações do usuário
         var usuario = await _userRepository.GetUserByLoginAsync(request.Login);
 
-        if (usuario == null || usuario.Senha != request.Password)
+        if (usuario == null)
+        {
+            return null;
+        }
+
+        var senhaValida = usuario.Senha.StartsWith("PBKDF2-SHA512$", StringComparison.Ordinal)
+            ? _passwordHasher.Verify(usuario.Senha, request.Password)
+            : usuario.Senha == request.Password;
+
+        if (!senhaValida)
         {
             return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
         }

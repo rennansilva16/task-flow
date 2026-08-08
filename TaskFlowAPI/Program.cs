@@ -29,6 +29,7 @@ namespace TaskFlowAPI
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+            builder.Services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
 
 
             builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));
