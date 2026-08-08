@@ -13,5 +13,6 @@ public class Tarefa
     public string? Descricao { get; set; }
     public DateOnly? DataPrazo { get; set; }
     public Status Status { get; set; } = Status.Pendente;
+    public long UsuarioId { get; set; }
     public Usuario Usuario { get; set; } = null!;
 }

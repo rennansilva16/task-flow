@@ -6,6 +6,7 @@ using TaskFlow.Shared.Responses;
 namespace TaskFlowAPI.Controllers;
 
 [Route("api/[controller]")]
+[Authorize]
 public class TarefaController : Controller
 {
     private readonly ITarefaService tarefaService;
@@ -15,7 +16,6 @@ public class TarefaController : Controller
         this.tarefaService = tarefaService;
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllTasks()
     {
