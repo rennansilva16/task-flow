@@ -37,4 +37,10 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(principal)));
     }
+
+    public void MarkUserAsLoggedOut()
+    {
+        var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(anonymous)));
+    }
 }

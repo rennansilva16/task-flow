@@ -36,6 +36,15 @@ public class AuthenticationService : IAuthenticationService
         return false;
     }
 
+    public async Task LogoutAsync()
+    {
+        // Remover o token do armazenamento local
+        await _storageService.RemoveItemAsync("token");
+
+        // Atualizar o estado de autenticação
+        _authenticationStateProvider.MarkUserAsLoggedOut();
+    }
+
     public async Task<bool> IsAuthenticatedAsync()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();

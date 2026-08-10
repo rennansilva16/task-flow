@@ -2,6 +2,7 @@ using TaskFlow.Shared.Requests;
 using TaskFlow.Shared.Responses;
 using System.Net.Http.Json;
 using TaskFlow.Web.Client.Services.Interfaces;
+using System.Net;
 public class TarefaService : ITarefaServiceAPI
 {
     private readonly HttpClient _httpClient;
@@ -13,10 +14,18 @@ public class TarefaService : ITarefaServiceAPI
     }
 
     public async Task<List<TaskResponse>> GetTarefasAsync()
-    {   
-        var tarefasEncontradas = await _httpClient.GetFromJsonAsync<List<TaskResponse>>(BaseUrl);
+    {
+        var response = await _httpClient.GetAsync(BaseUrl);
 
-        return tarefasEncontradas != null ? tarefasEncontradas : new List<TaskResponse>();
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            return new List<TaskResponse>();
+        }
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<List<TaskResponse>>()
+               ?? new List<TaskResponse>();
     }
 
     public async Task<TaskResponse?> CreateTarefaAsync(CreateTaskRequest request)
