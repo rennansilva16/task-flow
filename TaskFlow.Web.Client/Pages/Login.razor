@@ -1,0 +1,61 @@
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
+@layout AuthLayout
+@page "/login"
+
+
+<MudPaper Class="d-flex flex-column align-items-center p-4" Style="max-width: 400px; margin: auto;">
+    <MudText Typo="Typo.h5" Class="mb-4">Bem-vindo de volta!</MudText>
+    <MudTextField @bind-Value="loginRequest.Login" Label="Usuário" Variant="Variant.Outlined" Class="mb-3" FullWidth="true" />
+    <MudTextField @bind-Value="loginRequest.Password" Label="Senha" Variant="Variant.Outlined" Class="mb-3" FullWidth="true"
+                  InputType="InputType.Password" />
+    <MudStack>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EnterLogin" FullWidth="true">Entrar
+        </MudButton>
+        <MudText Typo="Typo.body2" Class="mt-2">
+            Ainda não tem uma conta? <MudLink Href="/CadastroUsuario">Cadastre-se</MudLink>
+        </MudText>
+        @if (loginFailed)
+        {
+            <MudText Typo="Typo.body2" Color="Color.Error" Class="mt-2">@errorMessage</MudText>
+        }
+    </MudStack>
+
+</MudPaper>
+
+@code {
+    private LoginRequest loginRequest = new LoginRequest();
+    private string errorMessage = string.Empty;
+    private bool loginFailed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthenticationService.IsAuthenticatedAsync();
+
+        if (isAuthenticated)
+        {
+            // Redireciona para a página inicial se o usuário já estiver autenticado
+            NavigationManager.NavigateTo("/Home");
+        }
+    }
+
+    private async Task EnterLogin()
+    {
+        loginFailed = false;
+        var success = await AuthenticationService .LoginAsync(loginRequest);
+
+        if (success)
+        {
+            // Redireciona para a página inicial
+            NavigationManager.NavigateTo("/Home");
+        }
+        else
+        {
+            // Exibe uma mensagem de erro
+            loginFailed = true;
+            errorMessage = "Falha no login. Verifique suas credenciais.";
+        }
+    }
+
+}

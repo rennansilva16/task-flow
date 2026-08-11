@@ -1,9 +1,12 @@
-
-using System;
 using Microsoft.EntityFrameworkCore;
+using TaskFlow.Application.Identity;
+using TaskFlow.Application.Persistence;
+using TaskFlow.Application.Services;
+using TaskFlow.Infrastructure.Identity;
 using TaskFlow.Infrastructure.Repositories;
+using TaskFlowAPI.Configurations;
 
-namespace WorksheetAPI
+namespace TaskFlowAPI
 {
     public class Program
     {
@@ -17,9 +20,16 @@ namespace WorksheetAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpContextAccessor();
 
-            builder.Services.AddScoped<TarefaRepository>();
-            builder.Services.AddScoped<TarefaService>();
+            builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<ITarefaService, TarefaService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+            builder.Services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
 
 
             builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlowConnection")));
@@ -35,6 +45,8 @@ namespace WorksheetAPI
               .AllowAnyMethod();
     });
 });
+
+            builder.Services.AddJwtAuthentication(builder.Configuration);
 
             var app = builder.Build();
 
@@ -74,8 +86,9 @@ namespace WorksheetAPI
 
             app.UseCors("AllowBlazor");
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

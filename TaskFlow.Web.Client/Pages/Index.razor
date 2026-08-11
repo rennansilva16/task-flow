@@ -1,0 +1,22 @@
+@inject NavigationManager NavigationManager
+@page "/"
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Lógica para verificar se o usuário está autenticado
+        // Por exemplo, verificar um token de autenticação armazenado no localStorage ou em um serviço de autenticação
+        // Se o usuário não estiver autenticado, redirecionar para a página de login
+        var isAuthenticated = false; // Substitua isso pela lógica real de verificação de autenticação
+
+        if (!isAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        } else
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+    }
+
+
+}

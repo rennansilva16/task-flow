@@ -1,4 +1,6 @@
-﻿@using MudBlazor.Utilities
+﻿@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+@using MudBlazor.Utilities
 @inherits LayoutComponentBase
 
 <MudThemeProvider />
@@ -12,7 +14,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
                        OnClick="ToggleDrawer" />
     </MudAppBar>
-    <MudDrawer @bind-open="_drawerOpen" Variant="DrawerVariant.Responsive" Breakpoint="Breakpoint.Md" Elevation="1"
+    <MudDrawer @bind-Open="_drawerOpen" Variant="DrawerVariant.Persistent" Elevation="1"
                Class="d-flex flex-column">
         <MudDrawerHeader Class="d-flex justify-center">
             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
@@ -22,9 +24,10 @@
                 </MudText>
             </MudStack>
         </MudDrawerHeader>
-        <NavMenu />
         <MudSpacer />
-
+        <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Logout" OnClick="Logout" Class="mb-2">
+            Logout
+        </MudButton>
     </MudDrawer>
     <!-- BOTÃO FLUTUANTE -->
     <MudMainContent>
@@ -41,5 +44,11 @@
     private void ToggleDrawer()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    private async Task Logout()
+    {
+        await AuthenticationService.LogoutAsync();
+        NavigationManager.NavigateTo("/login");
     }
 }

@@ -1,8 +1,9 @@
 ﻿@inject ISnackbar Snackbar
-@inject TarefaService TarefaService
+@inject ITarefaServiceAPI TarefaService
 @inject IDialogService DialogService
 @inject IJSRuntime JsRuntime
-@page "/"
+@page "/Home"
+@attribute [Authorize]
 
 <div class="d-flex flex-column text-white" style="height: 100vh;">
 	<MudDropContainer T="TaskResponse" Class="pa-4" Items="tasks"
