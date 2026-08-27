@@ -16,5 +16,6 @@ RUN dotnet publish "TaskFlow.Web.Client/TaskFlow.Web.Client.csproj" -c Release -
 FROM nginx:alpine
 
 COPY --from=build /app/publish/wwwroot /usr/share/nginx/html
+COPY TaskFlow.Web.Client/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
