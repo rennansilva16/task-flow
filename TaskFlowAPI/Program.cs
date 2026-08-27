@@ -72,6 +72,12 @@ namespace TaskFlowAPI
 
             }
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<TaskFlowDbContext>();
+                db.Database.Migrate();
+            }
+
             // Configure the HTTP request pipeline.
 
             app.UseSwagger();
