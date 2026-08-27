@@ -10,8 +10,10 @@ services:
     volumes:
       - sqlserver_data:/var/opt/mssql
 
-  api: 
-    image: taskflow-api:latest
+  api:
+    build:
+      context: .
+      dockerfile: TaskFlowAPI/Dockerfile
     container_name: taskflow-api
     depends_on:
       - sqlserver
@@ -20,7 +22,9 @@ services:
     ports:
       - "7215:8080"
   client:
-    image: taskflow-client:latest
+    build:
+      context: .
+      dockerfile: TaskFlow.Web.Client/Dockerfile
     container_name: taskflow-client
     depends_on:
       - api
