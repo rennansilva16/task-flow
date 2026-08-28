@@ -109,19 +109,34 @@ O projeto está estruturado em camadas bem definidas:
 
 ### Pré-requisitos
 
-- .NET SDK instalado
-- SQL Server (local ou container)
+- Git
+- Docker Desktop
 
 ### Passos
 
+Clone o repositório:
+
 ```bash
 git clone https://github.com/rennansilva16/task-flow.git
-````
+cd task-flow
+```
 
-1. Abra a solução no seu editor
-2. Configure a string de conexão no projeto **API**
-3. Execute a API
-4. Execute o projeto **Client**
+Suba a aplicação utilizando o Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+Após os containers serem iniciados, acesse a aplicação pelo navegador:
+
+http://localhost:7206
+
+O Docker Compose irá iniciar automaticamente:
+
+SQL Server
+API
+Client
+Banco de dados e aplicação das migrations
 
 ---
 
